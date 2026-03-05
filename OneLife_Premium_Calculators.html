@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneLife Protection Premium Calculators</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .logo-header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 15px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-bottom: 4px solid #FFC829;
+        }
+        
+        .logo-header img {
+            max-width: 280px;
+            height: auto;
+        }
+        
+        .logo-header p {
+            margin-top: 10px;
+            color: #1a1a1a;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-bottom: 20px;
+        }
+        
+        .tab-btn {
+            padding: 12px 20px;
+            border: none;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border-top: 3px solid transparent;
+        }
+        
+        .tab-btn:hover {
+            background: rgba(255,255,255,0.25);
+            border-top: 3px solid #FFC829;
+        }
+        
+        .tab-btn.active {
+            background: #fff;
+            color: #1a1a1a;
+            font-weight: 600;
+            border-top: 3px solid #FFC829;
+        }
+        
+        .calculator {
+            display: none;
+            background: #fff;
+            border-radius: 0 15px 15px 15px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border-top: 4px solid #FFC829;
+        }
+        
+        .calculator.active {
+            display: block;
+        }
+        
+        .calculator h2 {
+            color: #1a1a1a;
+            margin-bottom: 5px;
+            font-size: 1.5rem;
+        }
+        
+        .calculator .subtitle {
+            color: #666;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #FFC829;
+            box-shadow: 0 0 0 3px rgba(255, 200, 41, 0.2);
+        }
+        
+        .checkbox-group {
+            margin-bottom: 20px;
+        }
+        
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .checkbox-label input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            accent-color: #FFC829;
+        }
+        
+        .checkbox-text {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .hcb-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+        
+        .hcb-preview {
+            background: linear-gradient(135deg, #FFC829 0%, #E5B324 100%);
+            padding: 15px 20px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        .hcb-preview-label {
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+        
+        .hcb-preview-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .calculate-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #FFC829 0%, #E5B324 100%);
+            color: #1a1a1a;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(255, 200, 41, 0.6);
+        }
+        
+        .results {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            display: none;
+        }
+        
+        .results.show {
+            display: block;
+        }
+        
+        .results h3 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #FFC829;
+        }
+        
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .result-row:last-child {
+            border-bottom: none;
+        }
+        
+        .result-row.total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: #1a1a1a;
+            margin-top: 10px;
+            padding-top: 15px;
+            border-top: 3px solid #FFC829;
+            background: linear-gradient(90deg, rgba(255,200,41,0.15) 0%, rgba(255,200,41,0.05) 100%);
+            margin: 10px -10px 0;
+            padding: 15px 10px 10px;
+            border-radius: 0 0 8px 8px;
+        }
+        
+        .result-label {
+            color: #666;
+        }
+        
+        .result-value {
+            color: #333;
+            font-weight: 600;
+        }
+        
+        .error {
+            color: #dc3545;
+            background: #ffe6e6;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .error.show {
+            display: block;
+        }
+        
+        .info-box {
+            background: #FFFAEB;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #FFC829;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: #1a1a1a;
+        }
+        
+        .note {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 5px;
+        }
+        
+        .print-btn {
+            width: 100%;
+            padding: 12px;
+            background: #1a1a1a;
+            color: #fff;
+            border: 2px solid #FFC829;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .print-btn:hover {
+            background: #FFC829;
+            color: #1a1a1a;
+        }
+        
+        .print-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+        
+        .print-summary {
+            display: none;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #FFC829;
+        }
+        
+        .print-summary p {
+            margin: 5px 0;
+            font-size: 0.95rem;
+        }
+        
+        .print-summary strong {
+            color: #1a1a1a;
+        }
+        
+        @media print {
+            body {
+                background: #fff !important;
+                padding: 0 !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+            }
+            
+            .tabs, .tab-btn, .calculate-btn, .print-btn, .form-group, .form-row, .info-box, .error {
+                display: none !important;
+            }
+            
+            .calculator {
+                display: none !important;
+                box-shadow: none !important;
+                border: none !important;
+                padding: 0 !important;
+            }
+            
+            .calculator.active {
+                display: block !important;
+            }
+            
+            .calculator h2, .calculator .subtitle {
+                display: none !important;
+            }
+            
+            .calculator > h3, .calculator > div > h3, #future-2nd-life-section h3, .checkbox-group {
+                display: none !important;
+            }
+            
+            .results {
+                display: block !important;
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+                margin-top: 15px !important;
+            }
+            
+            .results.show {
+                display: flex !important;
+                flex-direction: column;
+            }
+            
+            .print-summary {
+                display: block !important;
+            }
+            
+            /* Print ordering */
+            .results .quote-title { order: 1; }
+            .results .quote-disclaimer { order: 2; }
+            .results .print-summary { order: 3; }
+            .results h3 { order: 4; margin-top: 10px; }
+            .results .breakdown-section { order: 5; width: 100%; }
+            .results .result-row.total { order: 6; width: 100%; }
+            .results .print-footer { order: 7; width: 100%; }
+            .results .print-btn { display: none !important; }
+            
+            .logo-header {
+                box-shadow: none !important;
+                border: none !important;
+                margin-bottom: 20px !important;
+            }
+            
+            .logo-header img {
+                max-width: 200px !important;
+            }
+            
+            .result-row.total {
+                background: #f8f9fa !important;
+            }
+            
+            .print-footer {
+                display: block !important;
+                margin-top: 30px;
+                padding-top: 15px;
+                border-top: 1px solid #ddd;
+                font-size: 0.85rem;
+                color: #666;
+                text-align: center;
+            }
+            
+            .quote-title {
+                display: block !important;
+                text-align: center;
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: #1a1a1a;
+                margin-bottom: 5px;
+                letter-spacing: 2px;
+            }
+            
+            .quote-disclaimer {
+                display: block !important;
+                text-align: center;
+                font-size: 0.85rem;
+                color: #666;
+                margin-bottom: 20px;
+                font-style: italic;
+            }
+            
+            .print-summary {
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 20px;
+                border-left: 4px solid #FFC829;
+            }
+            
+            .print-summary::before {
+                content: 'Policy Details';
+                display: block;
+                font-weight: 700;
+                font-size: 1.1rem;
+                margin-bottom: 10px;
+                color: #1a1a1a;
+            }
+            
+            .print-summary p {
+                margin: 5px 0;
+            }
+        }
+        
+        .print-footer, .quote-title, .quote-disclaimer {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            .tabs {
+                justify-content: center;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 10px 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo-header">
+            <img src="assets/onelife-logo.png" alt="OneLife Assurance Logo">
+            <p>Premium Calculators</p>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showCalculator('income')">Income Protect</button>
+            <button class="tab-btn" onclick="showCalculator('life')">Life Protect</button>
+            <button class="tab-btn" onclick="showCalculator('health')">Health Protect</button>
+            <button class="tab-btn" onclick="showCalculator('future')">Future Protect</button>
+        </div>
+
+        <!-- INCOME PROTECT CALCULATOR -->
+        <div id="income" class="calculator active">
+            <h2>Income Protect Calculator</h2>
+            <p class="subtitle">Death + Optional PTD (Permanent Total Disability) Coverage | Ages 18-55</p>
+            
+            <div class="info-box">
+                <strong>Coverage:</strong> Death benefit with optional PTD benefit and savings component
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="income-age">Age of Policyholder</label>
+                    <input type="number" id="income-age" min="18" max="55" placeholder="18 - 55">
+                </div>
+                <div class="form-group">
+                    <label for="income-term">Policy Term (Years)</label>
+                    <select id="income-term">
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="income-sa">Sum Assured (K)</label>
+                <input type="number" id="income-sa" min="10000" max="2000000" placeholder="10,000 - 2,000,000">
+                <p class="note">Minimum: K10,000 | Maximum: K2,000,000</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="income-savings">Monthly Savings Premium (K) - Optional</label>
+                <input type="number" id="income-savings" min="0" placeholder="Enter 0 if no savings">
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="income-ptd-include" checked>
+                    <span class="checkbox-text">Include PTD (Permanent Total Disability) Coverage</span>
+                </label>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateIncome()">Calculate Premium</button>
+            
+            <div class="error" id="income-error"></div>
+            
+            <div class="results" id="income-results">
+                <h3>Premium Breakdown</h3>
+                <div class="breakdown-section">
+                    <div class="result-row">
+                        <span class="result-label">Death Premium</span>
+                        <span class="result-value" id="income-death"></span>
+                    </div>
+                    <div class="result-row" id="income-ptd-row">
+                        <span class="result-label">PTD Premium</span>
+                        <span class="result-value" id="income-ptd"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Policy Fee</span>
+                        <span class="result-value">K 35.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Insurance Levy (5%)</span>
+                        <span class="result-value" id="income-levy"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Savings Premium</span>
+                        <span class="result-value" id="income-savings-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Investment Charge (1% of Savings)</span>
+                        <span class="result-value" id="income-invest"></span>
+                    </div>
+                </div>
+                <div class="result-row total">
+                    <span class="result-label">TOTAL MONTHLY PREMIUM</span>
+                    <span class="result-value" id="income-total"></span>
+                </div>
+                <button class="print-btn" onclick="printQuote('income')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">PREMIUM QUOTE</div>
+                <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
+                <div class="print-summary" id="income-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+
+        <!-- LIFE PROTECT CALCULATOR -->
+        <div id="life" class="calculator">
+            <h2>Life Protect Calculator</h2>
+            <p class="subtitle">Death Only Coverage | Ages 18-55</p>
+            
+            <div class="info-box">
+                <strong>Coverage:</strong> Death benefit only with optional savings component
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="life-age">Age of Policyholder</label>
+                    <input type="number" id="life-age" min="18" max="55" placeholder="18 - 55">
+                </div>
+                <div class="form-group">
+                    <label for="life-term">Policy Term (Years)</label>
+                    <select id="life-term">
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="life-sa">Sum Assured (K)</label>
+                <input type="number" id="life-sa" min="10000" max="2000000" placeholder="10,000 - 2,000,000">
+                <p class="note">Minimum: K10,000 | Maximum: K2,000,000</p>
+            </div>
+            
+            <div class="form-group">
+                <label for="life-savings">Monthly Savings Premium (K) - Optional</label>
+                <input type="number" id="life-savings" min="0" placeholder="Enter 0 if no savings">
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateLife()">Calculate Premium</button>
+            
+            <div class="error" id="life-error"></div>
+            
+            <div class="results" id="life-results">
+                <h3>Premium Breakdown</h3>
+                <div class="breakdown-section">
+                    <div class="result-row">
+                        <span class="result-label">Death Premium</span>
+                        <span class="result-value" id="life-death"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Policy Fee</span>
+                        <span class="result-value">K 35.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Insurance Levy (5%)</span>
+                        <span class="result-value" id="life-levy"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Savings Premium</span>
+                        <span class="result-value" id="life-savings-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Investment Charge (1% of Savings)</span>
+                        <span class="result-value" id="life-invest"></span>
+                    </div>
+                </div>
+                <div class="result-row total">
+                    <span class="result-label">TOTAL MONTHLY PREMIUM</span>
+                    <span class="result-value" id="life-total"></span>
+                </div>
+                <button class="print-btn" onclick="printQuote('life')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">PREMIUM QUOTE</div>
+                <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
+                <div class="print-summary" id="life-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+
+        <!-- HEALTH PROTECT CALCULATOR -->
+        <div id="health" class="calculator">
+            <h2>Health Protect Calculator</h2>
+            <p class="subtitle">Death + Hospital Cash Benefit (HCB) Coverage | Ages 18-55</p>
+            
+            <div class="info-box">
+                <strong>Coverage:</strong> Death benefit + Hospital Cash Benefit with optional savings
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="health-age">Age of Policyholder</label>
+                    <input type="number" id="health-age" min="18" max="55" placeholder="18 - 55">
+                </div>
+                <div class="form-group">
+                    <label for="health-term">Policy Term (Years)</label>
+                    <select id="health-term">
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="health-sa">Sum Assured (K)</label>
+                <input type="number" id="health-sa" min="10000" max="2000000" placeholder="10,000 - 2,000,000">
+                <p class="note">Minimum: K10,000 | Maximum: K2,000,000</p>
+            </div>
+            
+            <div class="hcb-section">
+                <h3 style="margin-bottom: 15px; color: #1a1a1a; border-left: 4px solid #FFC829; padding-left: 10px;">Hospital Cash Benefit (HCB) Options</h3>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="health-hcb-tier">HCB Cover Level</label>
+                        <select id="health-hcb-tier">
+                            <option value="0">No HCB Coverage</option>
+                            <option value="2500">Option 1 - K2,500</option>
+                            <option value="5000">Option 2 - K5,000</option>
+                            <option value="7500">Option 3 - K7,500</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="health-hcb-age">HCB Age Group</label>
+                        <select id="health-hcb-age">
+                            <option value="0-18">0 - 18 years</option>
+                            <option value="18-30">18 - 30 years</option>
+                            <option value="31-40">31 - 40 years</option>
+                            <option value="41-50">41 - 50 years</option>
+                            <option value="51-64">51 - 64 years</option>
+                            <option value="65+">65 and Above</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="hcb-preview" id="hcb-preview">
+                    <span class="hcb-preview-label">HCB Monthly Premium:</span>
+                    <span class="hcb-preview-value" id="hcb-preview-value">K 0.00</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="health-savings">Monthly Savings Premium (K) - Optional</label>
+                <input type="number" id="health-savings" min="0" placeholder="Enter 0 if no savings">
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateHealth()">Calculate Premium</button>
+            
+            <div class="error" id="health-error"></div>
+            
+            <div class="results" id="health-results">
+                <h3>Premium Breakdown</h3>
+                <div class="breakdown-section">
+                    <div class="result-row">
+                        <span class="result-label">Death Premium</span>
+                        <span class="result-value" id="health-death"></span>
+                    </div>
+                    <div class="result-row" id="health-hcb-row">
+                        <span class="result-label">HCB Premium <span id="health-hcb-tier-display"></span></span>
+                        <span class="result-value" id="health-hcb-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Policy Fee</span>
+                        <span class="result-value">K 35.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Insurance Levy (5% of Premium + HCB)</span>
+                        <span class="result-value" id="health-levy"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Savings Premium</span>
+                        <span class="result-value" id="health-savings-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Investment Charge (1% of Savings)</span>
+                        <span class="result-value" id="health-invest"></span>
+                    </div>
+                </div>
+                <div class="result-row total">
+                    <span class="result-label">TOTAL MONTHLY PREMIUM</span>
+                    <span class="result-value" id="health-total"></span>
+                </div>
+                <button class="print-btn" onclick="printQuote('health')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">PREMIUM QUOTE</div>
+                <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
+                <div class="print-summary" id="health-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+
+        <!-- FUTURE PROTECT CALCULATOR -->
+        <div id="future" class="calculator">
+            <h2>Future Protect Calculator</h2>
+            <p class="subtitle">Single or Joint Lives Coverage | Ages 18-55</p>
+            
+            <div class="info-box">
+                <strong>Coverage:</strong> Death benefit with optional 2nd life and savings component
+            </div>
+            
+            <h3 style="margin-bottom: 15px; color: #1a1a1a; border-left: 4px solid #FFC829; padding-left: 10px;">First Life</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="future-age1">Age of 1st Policyholder</label>
+                    <input type="number" id="future-age1" min="18" max="55" placeholder="18 - 55">
+                </div>
+                <div class="form-group">
+                    <label for="future-sa1">Sum Assured - 1st Life (K)</label>
+                    <input type="number" id="future-sa1" min="10000" max="2000000" placeholder="10,000 - 2,000,000">
+                </div>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="future-include-2nd" onchange="toggle2ndLife()">
+                    <span class="checkbox-text">Include 2nd Life Coverage</span>
+                </label>
+            </div>
+            
+            <div id="future-2nd-life-section" style="display: none;">
+                <h3 style="margin: 20px 0 15px; color: #1a1a1a; border-left: 4px solid #FFC829; padding-left: 10px;">Second Life</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="future-age2">Age of 2nd Policyholder</label>
+                        <input type="number" id="future-age2" min="18" max="55" placeholder="18 - 55">
+                    </div>
+                    <div class="form-group">
+                        <label for="future-sa2">Sum Assured - 2nd Life (K)</label>
+                        <input type="number" id="future-sa2" min="10000" max="2000000" placeholder="10,000 - 2,000,000">
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="future-term">Policy Term (Years)</label>
+                    <select id="future-term">
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="future-savings">Monthly Savings Premium (K) - Optional</label>
+                    <input type="number" id="future-savings" min="0" placeholder="Enter 0 if no savings">
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateFuture()">Calculate Premium</button>
+            
+            <div class="error" id="future-error"></div>
+            
+            <div class="results" id="future-results">
+                <h3>Premium Breakdown</h3>
+                <div class="breakdown-section">
+                    <div class="result-row">
+                        <span class="result-label">1st Life Premium</span>
+                        <span class="result-value" id="future-death1"></span>
+                    </div>
+                    <div class="result-row" id="future-death2-row">
+                        <span class="result-label">2nd Life Premium</span>
+                        <span class="result-value" id="future-death2"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Policy Fee</span>
+                        <span class="result-value">K 35.00</span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Insurance Levy (5% of Combined)</span>
+                        <span class="result-value" id="future-levy"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Savings Premium</span>
+                        <span class="result-value" id="future-savings-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Investment Charge (1% of Savings)</span>
+                        <span class="result-value" id="future-invest"></span>
+                    </div>
+                </div>
+                <div class="result-row total">
+                    <span class="result-label">TOTAL MONTHLY PREMIUM</span>
+                    <span class="result-value" id="future-total"></span>
+                </div>
+                <button class="print-btn" onclick="printQuote('future')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">PREMIUM QUOTE</div>
+                <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
+                <div class="print-summary" id="future-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // RATE TABLES FROM EXCEL
+        
+        // Income Protect - Death Rates
+        const incomeDeathRates = {
+            18: {3: 0.586, 5: 0.647, 7: 0.689, 10: 0.698},
+            19: {3: 0.599, 5: 0.677, 7: 0.705, 10: 0.706},
+            20: {3: 0.594, 5: 0.681, 7: 0.696, 10: 0.695},
+            21: {3: 0.615, 5: 0.683, 7: 0.690, 10: 0.688},
+            22: {3: 0.649, 5: 0.686, 7: 0.688, 10: 0.685},
+            23: {3: 0.646, 5: 0.671, 7: 0.673, 10: 0.674},
+            24: {3: 0.622, 5: 0.648, 7: 0.654, 10: 0.659},
+            25: {3: 0.592, 5: 0.624, 7: 0.634, 10: 0.645},
+            26: {3: 0.574, 5: 0.609, 7: 0.624, 10: 0.640},
+            27: {3: 0.565, 5: 0.603, 7: 0.621, 10: 0.641},
+            28: {3: 0.561, 5: 0.602, 7: 0.623, 10: 0.648},
+            29: {3: 0.563, 5: 0.606, 7: 0.630, 10: 0.658},
+            30: {3: 0.569, 5: 0.616, 7: 0.642, 10: 0.673},
+            31: {3: 0.580, 5: 0.629, 7: 0.658, 10: 0.691},
+            32: {3: 0.596, 5: 0.646, 7: 0.677, 10: 0.712},
+            33: {3: 0.615, 5: 0.667, 7: 0.699, 10: 0.736},
+            34: {3: 0.637, 5: 0.691, 7: 0.724, 10: 0.761},
+            35: {3: 0.662, 5: 0.717, 7: 0.751, 10: 0.788},
+            36: {3: 0.690, 5: 0.745, 7: 0.779, 10: 0.816},
+            37: {3: 0.720, 5: 0.775, 7: 0.809, 10: 0.846},
+            38: {3: 0.752, 5: 0.806, 7: 0.840, 10: 0.877},
+            39: {3: 0.784, 5: 0.837, 7: 0.870, 10: 0.910},
+            40: {3: 0.818, 5: 0.869, 7: 0.901, 10: 0.948},
+            41: {3: 0.852, 5: 0.900, 7: 0.934, 10: 0.990},
+            42: {3: 0.885, 5: 0.932, 7: 0.971, 10: 1.037},
+            43: {3: 0.956, 5: 0.991, 7: 1.033, 10: 1.109},
+            44: {3: 0.991, 5: 1.034, 7: 1.086, 10: 1.174},
+            45: {3: 1.033, 5: 1.087, 7: 1.150, 10: 1.251},
+            46: {3: 1.088, 5: 1.155, 7: 1.228, 10: 1.341},
+            47: {3: 1.163, 5: 1.240, 7: 1.322, 10: 1.446},
+            48: {3: 1.255, 5: 1.340, 7: 1.430, 10: 1.567},
+            49: {3: 1.364, 5: 1.456, 7: 1.553, 10: 1.702},
+            50: {3: 1.488, 5: 1.585, 7: 1.690, 10: 1.851},
+            51: {3: 1.626, 5: 1.727, 7: 1.841, 10: 2.016},
+            52: {3: 1.775, 5: 1.883, 7: 2.006, 10: 2.196},
+            53: {3: 1.917, 5: 2.040, 7: 2.177, 10: 2.384},
+            54: {3: 2.088, 5: 2.222, 7: 2.371, 10: 2.594},
+            55: {3: 2.278, 5: 2.423, 7: 2.584, 10: 2.825}
+        };
+        
+        // Income Protect - PTD Rates
+        const incomePTDRates = {
+            18: {3: 0.117, 5: 0.130, 7: 0.138, 10: 0.140},
+            19: {3: 0.120, 5: 0.136, 7: 0.141, 10: 0.141},
+            20: {3: 0.119, 5: 0.136, 7: 0.139, 10: 0.139},
+            21: {3: 0.123, 5: 0.137, 7: 0.138, 10: 0.138},
+            22: {3: 0.130, 5: 0.137, 7: 0.138, 10: 0.137},
+            23: {3: 0.129, 5: 0.134, 7: 0.135, 10: 0.135},
+            24: {3: 0.125, 5: 0.130, 7: 0.131, 10: 0.132},
+            25: {3: 0.119, 5: 0.125, 7: 0.127, 10: 0.129},
+            26: {3: 0.115, 5: 0.122, 7: 0.125, 10: 0.128},
+            27: {3: 0.113, 5: 0.121, 7: 0.124, 10: 0.128},
+            28: {3: 0.113, 5: 0.121, 7: 0.125, 10: 0.130},
+            29: {3: 0.113, 5: 0.121, 7: 0.126, 10: 0.132},
+            30: {3: 0.114, 5: 0.123, 7: 0.129, 10: 0.135},
+            31: {3: 0.116, 5: 0.126, 7: 0.132, 10: 0.138},
+            32: {3: 0.119, 5: 0.129, 7: 0.136, 10: 0.143},
+            33: {3: 0.123, 5: 0.134, 7: 0.140, 10: 0.147},
+            34: {3: 0.128, 5: 0.138, 7: 0.145, 10: 0.152},
+            35: {3: 0.133, 5: 0.144, 7: 0.150, 10: 0.158},
+            36: {3: 0.138, 5: 0.149, 7: 0.156, 10: 0.163},
+            37: {3: 0.144, 5: 0.155, 7: 0.162, 10: 0.169},
+            38: {3: 0.151, 5: 0.161, 7: 0.168, 10: 0.175},
+            39: {3: 0.157, 5: 0.168, 7: 0.174, 10: 0.182},
+            40: {3: 0.164, 5: 0.174, 7: 0.180, 10: 0.189},
+            41: {3: 0.170, 5: 0.180, 7: 0.187, 10: 0.198},
+            42: {3: 0.177, 5: 0.186, 7: 0.194, 10: 0.207},
+            43: {3: 0.191, 5: 0.198, 7: 0.206, 10: 0.222},
+            44: {3: 0.198, 5: 0.207, 7: 0.217, 10: 0.235},
+            45: {3: 0.206, 5: 0.217, 7: 0.230, 10: 0.250},
+            46: {3: 0.218, 5: 0.231, 7: 0.245, 10: 0.268},
+            47: {3: 0.232, 5: 0.248, 7: 0.264, 10: 0.289},
+            48: {3: 0.251, 5: 0.268, 7: 0.285, 10: 0.312},
+            49: {3: 0.272, 5: 0.291, 7: 0.310, 10: 0.339},
+            50: {3: 0.297, 5: 0.316, 7: 0.337, 10: 0.369},
+            51: {3: 0.324, 5: 0.344, 7: 0.367, 10: 0.401},
+            52: {3: 0.354, 5: 0.375, 7: 0.400, 10: 0.437},
+            53: {3: 0.382, 5: 0.406, 7: 0.433, 10: 0.474},
+            54: {3: 0.416, 5: 0.442, 7: 0.472, 10: 0.516},
+            55: {3: 0.454, 5: 0.482, 7: 0.514, 10: 0.561}
+        };
+        
+        // Life Protect - Death Rates
+        const lifeDeathRates = {
+            18: {3: 0.586, 5: 0.648, 7: 0.689, 10: 0.698},
+            19: {3: 0.599, 5: 0.677, 7: 0.705, 10: 0.706},
+            20: {3: 0.594, 5: 0.681, 7: 0.696, 10: 0.695},
+            21: {3: 0.615, 5: 0.683, 7: 0.690, 10: 0.688},
+            22: {3: 0.649, 5: 0.686, 7: 0.688, 10: 0.685},
+            23: {3: 0.646, 5: 0.671, 7: 0.673, 10: 0.674},
+            24: {3: 0.622, 5: 0.648, 7: 0.654, 10: 0.659},
+            25: {3: 0.592, 5: 0.624, 7: 0.634, 10: 0.646},
+            26: {3: 0.574, 5: 0.609, 7: 0.624, 10: 0.640},
+            27: {3: 0.565, 5: 0.603, 7: 0.621, 10: 0.642},
+            28: {3: 0.562, 5: 0.602, 7: 0.623, 10: 0.648},
+            29: {3: 0.563, 5: 0.606, 7: 0.631, 10: 0.658},
+            30: {3: 0.569, 5: 0.616, 7: 0.642, 10: 0.673},
+            31: {3: 0.580, 5: 0.629, 7: 0.658, 10: 0.691},
+            32: {3: 0.596, 5: 0.646, 7: 0.677, 10: 0.712},
+            33: {3: 0.615, 5: 0.667, 7: 0.700, 10: 0.736},
+            34: {3: 0.637, 5: 0.691, 7: 0.724, 10: 0.762},
+            35: {3: 0.662, 5: 0.717, 7: 0.751, 10: 0.789},
+            36: {3: 0.690, 5: 0.745, 7: 0.780, 10: 0.817},
+            37: {3: 0.720, 5: 0.775, 7: 0.809, 10: 0.846},
+            38: {3: 0.752, 5: 0.806, 7: 0.840, 10: 0.878},
+            39: {3: 0.784, 5: 0.837, 7: 0.870, 10: 0.911},
+            40: {3: 0.818, 5: 0.869, 7: 0.901, 10: 0.948},
+            41: {3: 0.852, 5: 0.901, 7: 0.934, 10: 0.990},
+            42: {3: 0.885, 5: 0.932, 7: 0.971, 10: 1.038},
+            43: {3: 0.956, 5: 0.992, 7: 1.033, 10: 1.110},
+            44: {3: 0.991, 5: 1.034, 7: 1.086, 10: 1.175},
+            45: {3: 1.033, 5: 1.087, 7: 1.150, 10: 1.252},
+            46: {3: 1.088, 5: 1.155, 7: 1.229, 10: 1.342},
+            47: {3: 1.163, 5: 1.240, 7: 1.323, 10: 1.448},
+            48: {3: 1.255, 5: 1.341, 7: 1.431, 10: 1.569},
+            49: {3: 1.364, 5: 1.457, 7: 1.554, 10: 1.704},
+            50: {3: 1.488, 5: 1.585, 7: 1.691, 10: 1.855},
+            51: {3: 1.626, 5: 1.727, 7: 1.842, 10: 2.020},
+            52: {3: 1.776, 5: 1.884, 7: 2.008, 10: 2.200},
+            53: {3: 1.918, 5: 2.041, 7: 2.179, 10: 2.389},
+            54: {3: 2.088, 5: 2.223, 7: 2.373, 10: 2.600},
+            55: {3: 2.278, 5: 2.424, 7: 2.587, 10: 2.832}
+        };
+        
+        // Health Protect - Death Rates (same as Life)
+        const healthDeathRates = lifeDeathRates;
+        
+        // Health Protect - HCB Rates by Tier, Age Group, and Premium Type
+        const hcbRates = {
+            '2500': {  // Option 1 - ZMW 2,500
+                '0-18':  { pure: 15.92, office: 30.32 },
+                '18-30': { pure: 14.25, office: 27.14 },
+                '31-40': { pure: 17.01, office: 32.40 },
+                '41-50': { pure: 17.91, office: 34.12 },
+                '51-64': { pure: 26.97, office: 51.37 },
+                '65+':   { pure: 71.04, office: 135.31 }
+            },
+            '5000': {  // Option 2 - ZMW 5,000
+                '0-18':  { pure: 31.83, office: 60.63 },
+                '18-30': { pure: 28.49, office: 54.27 },
+                '31-40': { pure: 34.02, office: 64.81 },
+                '41-50': { pure: 35.82, office: 68.23 },
+                '51-64': { pure: 53.94, office: 102.75 },
+                '65+':   { pure: 142.07, office: 270.61 }
+            },
+            '7500': {  // Option 3 - ZMW 7,500
+                '0-18':  { pure: 47.75, office: 90.95 },
+                '18-30': { pure: 42.74, office: 81.41 },
+                '31-40': { pure: 51.04, office: 97.21 },
+                '41-50': { pure: 53.73, office: 102.35 },
+                '51-64': { pure: 80.91, office: 154.12 },
+                '65+':   { pure: 213.11, office: 405.92 }
+            }
+        };
+        
+        // Future Protect - Death Rates (doubled rates from Excel)
+        const futureDeathRates = {
+            18: {3: 1.174, 5: 1.296, 7: 1.379, 10: 1.397},
+            19: {3: 1.199, 5: 1.356, 7: 1.411, 10: 1.413},
+            20: {3: 1.189, 5: 1.362, 7: 1.393, 10: 1.391},
+            21: {3: 1.231, 5: 1.366, 7: 1.381, 10: 1.377},
+            22: {3: 1.300, 5: 1.373, 7: 1.377, 10: 1.372},
+            23: {3: 1.294, 5: 1.344, 7: 1.348, 10: 1.349},
+            24: {3: 1.246, 5: 1.297, 7: 1.309, 10: 1.319},
+            25: {3: 1.186, 5: 1.249, 7: 1.270, 10: 1.292},
+            26: {3: 1.149, 5: 1.220, 7: 1.249, 10: 1.281},
+            27: {3: 1.132, 5: 1.207, 7: 1.243, 10: 1.283},
+            28: {3: 1.124, 5: 1.205, 7: 1.247, 10: 1.296},
+            29: {3: 1.127, 5: 1.214, 7: 1.262, 10: 1.317},
+            30: {3: 1.140, 5: 1.232, 7: 1.285, 10: 1.346},
+            31: {3: 1.162, 5: 1.259, 7: 1.317, 10: 1.382},
+            32: {3: 1.192, 5: 1.294, 7: 1.355, 10: 1.424},
+            33: {3: 1.231, 5: 1.336, 7: 1.400, 10: 1.471},
+            34: {3: 1.276, 5: 1.383, 7: 1.450, 10: 1.523},
+            35: {3: 1.326, 5: 1.435, 7: 1.503, 10: 1.577},
+            36: {3: 1.381, 5: 1.492, 7: 1.560, 10: 1.634},
+            37: {3: 1.442, 5: 1.551, 7: 1.620, 10: 1.693},
+            38: {3: 1.507, 5: 1.615, 7: 1.682, 10: 1.755},
+            39: {3: 1.571, 5: 1.677, 7: 1.742, 10: 1.822},
+            40: {3: 1.639, 5: 1.741, 7: 1.805, 10: 1.897},
+            41: {3: 1.707, 5: 1.804, 7: 1.871, 10: 1.980},
+            42: {3: 1.774, 5: 1.867, 7: 1.944, 10: 2.076},
+            43: {3: 1.916, 5: 1.987, 7: 2.070, 10: 2.218},
+            44: {3: 1.986, 5: 2.072, 7: 2.175, 10: 2.349},
+            45: {3: 2.070, 5: 2.179, 7: 2.303, 10: 2.501},
+            46: {3: 2.182, 5: 2.315, 7: 2.460, 10: 2.680},
+            47: {3: 2.331, 5: 2.485, 7: 2.648, 10: 2.891},
+            48: {3: 2.517, 5: 2.688, 7: 2.866, 10: 3.131},
+            49: {3: 2.735, 5: 2.920, 7: 3.112, 10: 3.401},
+            50: {3: 2.986, 5: 3.180, 7: 3.387, 10: 3.700},
+            51: {3: 3.263, 5: 3.466, 7: 3.691, 10: 4.029},
+            52: {3: 3.565, 5: 3.781, 7: 4.024, 10: 4.389},
+            53: {3: 3.852, 5: 4.098, 7: 4.366, 10: 4.763},
+            54: {3: 4.196, 5: 4.465, 7: 4.756, 10: 5.183},
+            55: {3: 4.580, 5: 4.870, 7: 5.185, 10: 5.644}
+        };
+        
+        const POLICY_FEE = 35;
+        const LEVY_RATE = 0.05;
+        const INVEST_CHARGE_RATE = 0.01;
+        
+        function formatCurrency(amount) {
+            return 'K ' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+        
+        function showCalculator(calcId) {
+            // Hide all calculators
+            document.querySelectorAll('.calculator').forEach(calc => calc.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            // Show selected calculator
+            document.getElementById(calcId).classList.add('active');
+            event.target.classList.add('active');
+        }
+        
+        function showError(elementId, message) {
+            const errorDiv = document.getElementById(elementId);
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+        }
+        
+        function hideError(elementId) {
+            document.getElementById(elementId).classList.remove('show');
+        }
+        
+        function validateSA(sa) {
+            return sa >= 10000 && sa <= 2000000;
+        }
+        
+        // INCOME PROTECT
+        function calculateIncome() {
+            hideError('income-error');
+            document.getElementById('income-results').classList.remove('show');
+            
+            const age = parseInt(document.getElementById('income-age').value);
+            const term = parseInt(document.getElementById('income-term').value);
+            const sa = parseFloat(document.getElementById('income-sa').value) || 0;
+            const savings = parseFloat(document.getElementById('income-savings').value) || 0;
+            
+            if (isNaN(age) || age < 18 || age > 55) {
+                showError('income-error', 'Please enter a valid age between 18 and 55.');
+                return;
+            }
+            if (!validateSA(sa)) {
+                showError('income-error', 'Sum Assured must be between K10,000 and K2,000,000.');
+                return;
+            }
+            
+            const deathRate = incomeDeathRates[age][term];
+            const includePTD = document.getElementById('income-ptd-include').checked;
+            
+            const deathPremium = (deathRate / 1000) * sa;
+            let ptdPremium = 0;
+            if (includePTD) {
+                const ptdRate = incomePTDRates[age][term];
+                ptdPremium = (ptdRate / 1000) * sa;
+            }
+            const insuranceLevy = LEVY_RATE * (deathPremium + ptdPremium);
+            const investCharge = INVEST_CHARGE_RATE * savings;
+            const total = deathPremium + ptdPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
+            
+            document.getElementById('income-death').textContent = formatCurrency(deathPremium);
+            document.getElementById('income-ptd').textContent = formatCurrency(ptdPremium);
+            document.getElementById('income-ptd-row').style.display = includePTD ? '' : 'none';
+            document.getElementById('income-levy').textContent = formatCurrency(insuranceLevy);
+            document.getElementById('income-savings-display').textContent = formatCurrency(savings);
+            document.getElementById('income-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('income-total').textContent = formatCurrency(total);
+            
+            document.getElementById('income-results').classList.add('show');
+        }
+        
+        // LIFE PROTECT
+        function calculateLife() {
+            hideError('life-error');
+            document.getElementById('life-results').classList.remove('show');
+            
+            const age = parseInt(document.getElementById('life-age').value);
+            const term = parseInt(document.getElementById('life-term').value);
+            const sa = parseFloat(document.getElementById('life-sa').value) || 0;
+            const savings = parseFloat(document.getElementById('life-savings').value) || 0;
+            
+            if (isNaN(age) || age < 18 || age > 55) {
+                showError('life-error', 'Please enter a valid age between 18 and 55.');
+                return;
+            }
+            if (!validateSA(sa)) {
+                showError('life-error', 'Sum Assured must be between K10,000 and K2,000,000.');
+                return;
+            }
+            
+            const deathRate = lifeDeathRates[age][term];
+            const deathPremium = (deathRate / 1000) * sa;
+            const insuranceLevy = LEVY_RATE * deathPremium;
+            const investCharge = INVEST_CHARGE_RATE * savings;
+            const total = deathPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
+            
+            document.getElementById('life-death').textContent = formatCurrency(deathPremium);
+            document.getElementById('life-levy').textContent = formatCurrency(insuranceLevy);
+            document.getElementById('life-savings-display').textContent = formatCurrency(savings);
+            document.getElementById('life-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('life-total').textContent = formatCurrency(total);
+            
+            document.getElementById('life-results').classList.add('show');
+        }
+        
+        // HEALTH PROTECT - HCB Rate Lookup (Office Premium only)
+        function getHcbRate() {
+            const tier = document.getElementById('health-hcb-tier').value;
+            const ageGroup = document.getElementById('health-hcb-age').value;
+            
+            if (tier === '0') return 0;
+            return hcbRates[tier][ageGroup]['office'];
+        }
+        
+        function updateHcbPreview() {
+            const hcb = getHcbRate();
+            document.getElementById('hcb-preview-value').textContent = formatCurrency(hcb);
+        }
+        
+        // Add event listeners for HCB dropdowns
+        document.getElementById('health-hcb-tier').addEventListener('change', updateHcbPreview);
+        document.getElementById('health-hcb-age').addEventListener('change', updateHcbPreview);
+        
+        // Toggle 2nd Life section in Future Protect
+        function toggle2ndLife() {
+            const include2nd = document.getElementById('future-include-2nd').checked;
+            document.getElementById('future-2nd-life-section').style.display = include2nd ? 'block' : 'none';
+            if (!include2nd) {
+                document.getElementById('future-age2').value = '';
+                document.getElementById('future-sa2').value = '';
+            }
+        }
+        
+        // HEALTH PROTECT
+        function calculateHealth() {
+            hideError('health-error');
+            document.getElementById('health-results').classList.remove('show');
+            
+            const age = parseInt(document.getElementById('health-age').value);
+            const term = parseInt(document.getElementById('health-term').value);
+            const sa = parseFloat(document.getElementById('health-sa').value) || 0;
+            const hcb = getHcbRate();
+            const hcbTier = document.getElementById('health-hcb-tier').value;
+            const savings = parseFloat(document.getElementById('health-savings').value) || 0;
+            
+            if (isNaN(age) || age < 18 || age > 55) {
+                showError('health-error', 'Please enter a valid age between 18 and 55.');
+                return;
+            }
+            if (!validateSA(sa)) {
+                showError('health-error', 'Sum Assured must be between K10,000 and K2,000,000.');
+                return;
+            }
+            
+            const deathRate = healthDeathRates[age][term];
+            const deathPremium = (deathRate / 1000) * sa;
+            const insuranceLevy = LEVY_RATE * (deathPremium + hcb);
+            const investCharge = INVEST_CHARGE_RATE * savings;
+            const total = deathPremium + hcb + POLICY_FEE + insuranceLevy + savings + investCharge;
+            
+            // Update tier display label
+            const tierLabels = {'0': '', '2500': '(K2,500)', '5000': '(K5,000)', '7500': '(K7,500)'};
+            document.getElementById('health-hcb-tier-display').textContent = tierLabels[hcbTier];
+            
+            document.getElementById('health-death').textContent = formatCurrency(deathPremium);
+            document.getElementById('health-hcb-display').textContent = formatCurrency(hcb);
+            document.getElementById('health-hcb-row').style.display = hcbTier === '0' ? 'none' : '';
+            document.getElementById('health-levy').textContent = formatCurrency(insuranceLevy);
+            document.getElementById('health-savings-display').textContent = formatCurrency(savings);
+            document.getElementById('health-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('health-total').textContent = formatCurrency(total);
+            
+            document.getElementById('health-results').classList.add('show');
+        }
+        
+        // FUTURE PROTECT
+        function calculateFuture() {
+            hideError('future-error');
+            document.getElementById('future-results').classList.remove('show');
+            
+            const age1 = parseInt(document.getElementById('future-age1').value);
+            const sa1 = parseFloat(document.getElementById('future-sa1').value) || 0;
+            const term = parseInt(document.getElementById('future-term').value);
+            const savings = parseFloat(document.getElementById('future-savings').value) || 0;
+            const include2nd = document.getElementById('future-include-2nd').checked;
+            
+            if (isNaN(age1) || age1 < 18 || age1 > 55) {
+                showError('future-error', 'Please enter a valid age for 1st Life (18-55).');
+                return;
+            }
+            if (!validateSA(sa1)) {
+                showError('future-error', '1st Life Sum Assured must be between K10,000 and K2,000,000.');
+                return;
+            }
+            
+            let deathPremium2 = 0;
+            if (include2nd) {
+                const age2 = parseInt(document.getElementById('future-age2').value);
+                const sa2 = parseFloat(document.getElementById('future-sa2').value) || 0;
+                
+                if (isNaN(age2) || age2 < 18 || age2 > 55) {
+                    showError('future-error', 'Please enter a valid age for 2nd Life (18-55).');
+                    return;
+                }
+                if (!validateSA(sa2)) {
+                    showError('future-error', '2nd Life Sum Assured must be between K10,000 and K2,000,000.');
+                    return;
+                }
+                
+                const rate2 = futureDeathRates[age2][term];
+                deathPremium2 = (rate2 / 1000) * sa2;
+            }
+            
+            const rate1 = futureDeathRates[age1][term];
+            const deathPremium1 = (rate1 / 1000) * sa1;
+            const combinedPremium = deathPremium1 + deathPremium2;
+            const insuranceLevy = LEVY_RATE * combinedPremium;
+            const investCharge = INVEST_CHARGE_RATE * savings;
+            const total = combinedPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
+            
+            document.getElementById('future-death1').textContent = formatCurrency(deathPremium1);
+            document.getElementById('future-death2').textContent = formatCurrency(deathPremium2);
+            document.getElementById('future-death2-row').style.display = include2nd ? '' : 'none';
+            document.getElementById('future-levy').textContent = formatCurrency(insuranceLevy);
+            document.getElementById('future-savings-display').textContent = formatCurrency(savings);
+            document.getElementById('future-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('future-total').textContent = formatCurrency(total);
+            
+            document.getElementById('future-results').classList.add('show');
+        }
+        
+        // PRINT FUNCTION
+        function printQuote(product) {
+            // Set print date and time
+            const now = new Date();
+            const dateTimeStr = now.toLocaleDateString('en-GB', { 
+                day: '2-digit', 
+                month: 'short', 
+                year: 'numeric' 
+            }) + ' at ' + now.toLocaleTimeString('en-GB', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.querySelectorAll('.print-date').forEach(el => el.textContent = dateTimeStr);
+            
+            // Build summary based on product
+            let summaryHTML = '';
+            const productNames = {
+                'income': 'Income Protect',
+                'life': 'Life Protect',
+                'health': 'Health Protect',
+                'future': 'Future Protect'
+            };
+            
+            if (product === 'income') {
+                const age = document.getElementById('income-age').value;
+                const term = document.getElementById('income-term').value;
+                const sa = parseFloat(document.getElementById('income-sa').value).toLocaleString();
+                const includePTD = document.getElementById('income-ptd-include').checked;
+                const coverageType = includePTD ? 'Death + PTD' : 'Death Only';
+                summaryHTML = `
+                    <p><strong>Product:</strong> Income Protect (${coverageType})</p>
+                    <p><strong>Age:</strong> ${age} years</p>
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                    <p><strong>Sum Assured:</strong> K ${sa}</p>
+                `;
+            } else if (product === 'life') {
+                const age = document.getElementById('life-age').value;
+                const term = document.getElementById('life-term').value;
+                const sa = parseFloat(document.getElementById('life-sa').value).toLocaleString();
+                summaryHTML = `
+                    <p><strong>Product:</strong> Life Protect (Death Only)</p>
+                    <p><strong>Age:</strong> ${age} years</p>
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                    <p><strong>Sum Assured:</strong> K ${sa}</p>
+                `;
+            } else if (product === 'health') {
+                const age = document.getElementById('health-age').value;
+                const term = document.getElementById('health-term').value;
+                const sa = parseFloat(document.getElementById('health-sa').value).toLocaleString();
+                const hcbTier = document.getElementById('health-hcb-tier').value;
+                const hcbAgeGroup = document.getElementById('health-hcb-age').value;
+                const tierNames = {'0': 'None', '2500': 'Option 1 (K2,500)', '5000': 'Option 2 (K5,000)', '7500': 'Option 3 (K7,500)'};
+                summaryHTML = `
+                    <p><strong>Product:</strong> Health Protect (Death + HCB)</p>
+                    <p><strong>Age:</strong> ${age} years</p>
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                    <p><strong>Sum Assured:</strong> K ${sa}</p>
+                    <p><strong>HCB Cover:</strong> ${tierNames[hcbTier]} | Age Group: ${hcbAgeGroup}</p>
+                `;
+            } else if (product === 'future') {
+                const age1 = document.getElementById('future-age1').value;
+                const term = document.getElementById('future-term').value;
+                const sa1 = parseFloat(document.getElementById('future-sa1').value).toLocaleString();
+                const include2nd = document.getElementById('future-include-2nd').checked;
+                let livesInfo = `<p><strong>1st Life Age:</strong> ${age1} years | <strong>Sum Assured:</strong> K ${sa1}</p>`;
+                if (include2nd) {
+                    const age2 = document.getElementById('future-age2').value;
+                    const sa2 = parseFloat(document.getElementById('future-sa2').value).toLocaleString();
+                    livesInfo += `<p><strong>2nd Life Age:</strong> ${age2} years | <strong>Sum Assured:</strong> K ${sa2}</p>`;
+                }
+                summaryHTML = `
+                    <p><strong>Product:</strong> Future Protect${include2nd ? ' (Joint Lives)' : ''}</p>
+                    ${livesInfo}
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                `;
+            }
+            
+            document.getElementById(product + '-summary').innerHTML = summaryHTML;
+            
+            // Trigger print
+            window.print();
+        }
+    </script>
+</body>
+</html>
