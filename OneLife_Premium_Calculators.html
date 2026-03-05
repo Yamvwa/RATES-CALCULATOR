@@ -727,11 +727,6 @@
                 </div>
             </div>
             
-            <div class="form-group">
-                <label for="health-savings">Monthly Savings Premium (K) - Optional</label>
-                <input type="number" id="health-savings" min="0" placeholder="Enter 0 if no savings">
-            </div>
-            
             <button class="calculate-btn" onclick="calculateHealth()">Calculate Premium</button>
             
             <div class="error" id="health-error"></div>
@@ -754,14 +749,6 @@
                     <div class="result-row">
                         <span class="result-label">Insurance Levy (5% of Premium + HCB)</span>
                         <span class="result-value" id="health-levy"></span>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Savings Premium</span>
-                        <span class="result-value" id="health-savings-display"></span>
-                    </div>
-                    <div class="result-row">
-                        <span class="result-label">Investment Charge (1% of Savings)</span>
-                        <span class="result-value" id="health-invest"></span>
                     </div>
                 </div>
                 <div class="result-row total">
@@ -1238,7 +1225,6 @@
             const sa = parseFloat(document.getElementById('health-sa').value) || 0;
             const hcb = getHcbRate();
             const hcbTier = document.getElementById('health-hcb-tier').value;
-            const savings = parseFloat(document.getElementById('health-savings').value) || 0;
             
             if (isNaN(age) || age < 18 || age > 55) {
                 showError('health-error', 'Please enter a valid age between 18 and 55.');
@@ -1252,8 +1238,7 @@
             const deathRate = healthDeathRates[age][term];
             const deathPremium = (deathRate / 1000) * sa;
             const insuranceLevy = LEVY_RATE * (deathPremium + hcb);
-            const investCharge = INVEST_CHARGE_RATE * savings;
-            const total = deathPremium + hcb + POLICY_FEE + insuranceLevy + savings + investCharge;
+            const total = deathPremium + hcb + POLICY_FEE + insuranceLevy;
             
             // Update tier display label
             const tierLabels = {'0': '', '2500': '(K2,500)', '5000': '(K5,000)', '7500': '(K7,500)'};
@@ -1263,8 +1248,6 @@
             document.getElementById('health-hcb-display').textContent = formatCurrency(hcb);
             document.getElementById('health-hcb-row').style.display = hcbTier === '0' ? 'none' : '';
             document.getElementById('health-levy').textContent = formatCurrency(insuranceLevy);
-            document.getElementById('health-savings-display').textContent = formatCurrency(savings);
-            document.getElementById('health-invest').textContent = formatCurrency(investCharge);
             document.getElementById('health-total').textContent = formatCurrency(total);
             
             document.getElementById('health-results').classList.add('show');
