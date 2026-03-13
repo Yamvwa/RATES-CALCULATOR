@@ -187,6 +187,10 @@
             gap: 20px;
         }
         
+        .form-row.three-col {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+        
         .calculate-btn {
             width: 100%;
             padding: 15px;
@@ -368,6 +372,38 @@
                 display: none !important;
             }
             
+            .quote-details {
+                display: none !important;
+            }
+            
+            .print-quote-details {
+                display: block !important;
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin-bottom: 15px;
+                border: 1px solid #ddd;
+            }
+            
+            .print-quote-details .details-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            
+            .print-quote-details h4 {
+                font-size: 0.9rem;
+                margin-bottom: 8px;
+                padding-bottom: 5px;
+                border-bottom: 2px solid #FFC829;
+                color: #1a1a1a;
+            }
+            
+            .print-quote-details p {
+                margin: 3px 0;
+                font-size: 0.85rem;
+            }
+            
             .results {
                 display: block !important;
                 box-shadow: none !important;
@@ -462,10 +498,57 @@
         .print-footer, .quote-title, .quote-disclaimer {
             display: none;
         }
+        
+        .quote-details {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .quote-details h3 {
+            color: #1a1a1a;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+            border-left: 4px solid #FFC829;
+            padding-left: 10px;
+        }
+        
+        .quote-details .form-row {
+            margin-bottom: 10px;
+        }
+        
+        .quote-details .form-group input {
+            font-size: 0.9rem;
+            padding: 10px 12px;
+        }
+        
+        .quote-details label {
+            font-size: 0.85rem;
+        }
+        
+        .details-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .details-section h4 {
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #FFC829;
+        }
 
         @media (max-width: 600px) {
-            .form-row {
+            .form-row, .form-row.three-col {
                 grid-template-columns: 1fr;
+            }
+            .details-row {
+                grid-template-columns: 1fr;
+                gap: 15px;
             }
             .tabs {
                 justify-content: center;
@@ -484,11 +567,76 @@
             <p>Premium Calculators</p>
         </div>
         
+        <div class="quote-details">
+            <h3>Quote Details</h3>
+            <div class="details-row">
+                <div class="details-section">
+                    <h4>Agent Information</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agent-name">Agent Name</label>
+                            <input type="text" id="agent-name" placeholder="Enter agent name">
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-city">City/Branch</label>
+                            <input type="text" id="agent-city" placeholder="Enter city or branch">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agent-phone">Phone Number</label>
+                            <input type="tel" id="agent-phone" placeholder="Enter phone number">
+                        </div>
+                        <div class="form-group">
+                            <label for="agent-email">Email Address</label>
+                            <input type="email" id="agent-email" placeholder="Enter email address">
+                        </div>
+                    </div>
+                </div>
+                <div class="details-section">
+                    <h4>Client Information</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="client-name">Client Name</label>
+                            <input type="text" id="client-name" placeholder="Enter client name">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-phone">Phone Number</label>
+                            <input type="tel" id="client-phone" placeholder="Enter phone number">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="client-email">Email Address</label>
+                        <input type="email" id="client-email" placeholder="Enter email address">
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="print-quote-details" style="display: none;">
+            <div class="details-grid">
+                <div>
+                    <h4>Agent Information</h4>
+                    <p><strong>Name:</strong> <span id="print-agent-name"></span></p>
+                    <p><strong>City/Branch:</strong> <span id="print-agent-city"></span></p>
+                    <p><strong>Phone:</strong> <span id="print-agent-phone"></span></p>
+                    <p><strong>Email:</strong> <span id="print-agent-email"></span></p>
+                </div>
+                <div>
+                    <h4>Client Information</h4>
+                    <p><strong>Name:</strong> <span id="print-client-name"></span></p>
+                    <p><strong>Phone:</strong> <span id="print-client-phone"></span></p>
+                    <p><strong>Email:</strong> <span id="print-client-email"></span></p>
+                </div>
+            </div>
+        </div>
+        
         <div class="tabs">
             <button class="tab-btn active" onclick="showCalculator('income')">Income Protect</button>
             <button class="tab-btn" onclick="showCalculator('life')">Life Protect</button>
             <button class="tab-btn" onclick="showCalculator('health')">Health Protect</button>
             <button class="tab-btn" onclick="showCalculator('future')">Future Protect</button>
+            <button class="tab-btn" onclick="showCalculator('savings')">Savings Calculator</button>
         </div>
 
         <!-- INCOME PROTECT CALCULATOR -->
@@ -562,8 +710,8 @@
                         <span class="result-value" id="income-savings-display"></span>
                     </div>
                     <div class="result-row">
-                        <span class="result-label">Investment Charge (1% of Savings)</span>
-                        <span class="result-value" id="income-invest"></span>
+                        <span class="result-label">Savings Charge (1% of Savings)</span>
+                        <span class="result-value" id="income-savings-charge"></span>
                     </div>
                 </div>
                 <div class="result-row total">
@@ -643,8 +791,8 @@
                         <span class="result-value" id="life-savings-display"></span>
                     </div>
                     <div class="result-row">
-                        <span class="result-label">Investment Charge (1% of Savings)</span>
-                        <span class="result-value" id="life-invest"></span>
+                        <span class="result-label">Savings Charge (1% of Savings)</span>
+                        <span class="result-value" id="life-savings-charge"></span>
                     </div>
                 </div>
                 <div class="result-row total">
@@ -854,8 +1002,8 @@
                         <span class="result-value" id="future-savings-display"></span>
                     </div>
                     <div class="result-row">
-                        <span class="result-label">Investment Charge (1% of Savings)</span>
-                        <span class="result-value" id="future-invest"></span>
+                        <span class="result-label">Savings Charge (1% of Savings)</span>
+                        <span class="result-value" id="future-savings-charge"></span>
                     </div>
                 </div>
                 <div class="result-row total">
@@ -871,6 +1019,95 @@
                 <div class="quote-title">PREMIUM QUOTE</div>
                 <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
                 <div class="print-summary" id="future-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+
+        <!-- SAVINGS CALCULATOR -->
+        <div id="savings" class="calculator">
+            <h2>Savings Calculator</h2>
+            <p class="subtitle">Calculate Expected Savings at Policy Maturity | 3% - 12% Annual Interest</p>
+            
+            <div class="info-box">
+                <strong>Interest Rate:</strong> Select rate from 3% to 12% per annum compounded monthly on your savings contributions
+            </div>
+            
+            <div class="form-row three-col">
+                <div class="form-group">
+                    <label for="savings-monthly">Monthly Savings Amount (K)</label>
+                    <input type="number" id="savings-monthly" min="1" placeholder="Enter monthly savings">
+                </div>
+                <div class="form-group">
+                    <label for="savings-term">Policy Term (Years)</label>
+                    <select id="savings-term">
+                        <option value="3">3 Years</option>
+                        <option value="5">5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="savings-rate">Interest Rate (p.a.)</label>
+                    <select id="savings-rate">
+                        <option value="3">3%</option>
+                        <option value="4">4%</option>
+                        <option value="5">5%</option>
+                        <option value="6">6%</option>
+                        <option value="7">7%</option>
+                        <option value="8">8%</option>
+                        <option value="9">9%</option>
+                        <option value="10">10%</option>
+                        <option value="11">11%</option>
+                        <option value="12">12%</option>
+                    </select>
+                </div>
+            </div>
+            
+            <button class="calculate-btn" onclick="calculateSavings()">Calculate Expected Savings</button>
+            
+            <div class="error" id="savings-error"></div>
+            
+            <div class="results" id="savings-results">
+                <h3>Savings Projection</h3>
+                <div class="breakdown-section">
+                    <div class="result-row">
+                        <span class="result-label">Monthly Contribution</span>
+                        <span class="result-value" id="savings-contribution"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Policy Term</span>
+                        <span class="result-value" id="savings-term-display"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Total Contributions</span>
+                        <span class="result-value" id="savings-total-contrib"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Less: Savings Charge (1%)</span>
+                        <span class="result-value" id="savings-charge"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Net Contributions</span>
+                        <span class="result-value" id="savings-net-contrib"></span>
+                    </div>
+                    <div class="result-row">
+                        <span class="result-label">Interest Earned (<span id="savings-rate-display">3</span>% p.a.)</span>
+                        <span class="result-value" id="savings-interest"></span>
+                    </div>
+                </div>
+                <div class="result-row total">
+                    <span class="result-label">EXPECTED MATURITY VALUE</span>
+                    <span class="result-value" id="savings-maturity"></span>
+                </div>
+                <button class="print-btn" onclick="printQuote('savings')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">SAVINGS PROJECTION</div>
+                <div class="quote-disclaimer">This is a projection only and actual returns may vary</div>
+                <div class="print-summary" id="savings-summary"></div>
                 <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
             </div>
         </div>
@@ -1093,7 +1330,8 @@
             
             // Show selected calculator
             document.getElementById(calcId).classList.add('active');
-            event.target.classList.add('active');
+            // Find and activate the clicked tab button
+            document.querySelector(`.tab-btn[onclick="showCalculator('${calcId}')"]`).classList.add('active');
         }
         
         function showError(elementId, message) {
@@ -1147,7 +1385,7 @@
             document.getElementById('income-ptd-row').style.display = includePTD ? '' : 'none';
             document.getElementById('income-levy').textContent = formatCurrency(insuranceLevy);
             document.getElementById('income-savings-display').textContent = formatCurrency(savings);
-            document.getElementById('income-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('income-savings-charge').textContent = formatCurrency(investCharge);
             document.getElementById('income-total').textContent = formatCurrency(total);
             
             document.getElementById('income-results').classList.add('show');
@@ -1181,7 +1419,7 @@
             document.getElementById('life-death').textContent = formatCurrency(deathPremium);
             document.getElementById('life-levy').textContent = formatCurrency(insuranceLevy);
             document.getElementById('life-savings-display').textContent = formatCurrency(savings);
-            document.getElementById('life-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('life-savings-charge').textContent = formatCurrency(investCharge);
             document.getElementById('life-total').textContent = formatCurrency(total);
             
             document.getElementById('life-results').classList.add('show');
@@ -1303,14 +1541,80 @@
             document.getElementById('future-death2-row').style.display = include2nd ? '' : 'none';
             document.getElementById('future-levy').textContent = formatCurrency(insuranceLevy);
             document.getElementById('future-savings-display').textContent = formatCurrency(savings);
-            document.getElementById('future-invest').textContent = formatCurrency(investCharge);
+            document.getElementById('future-savings-charge').textContent = formatCurrency(investCharge);
             document.getElementById('future-total').textContent = formatCurrency(total);
             
             document.getElementById('future-results').classList.add('show');
         }
         
+        // SAVINGS CALCULATOR
+        function calculateSavings() {
+            hideError('savings-error');
+            document.getElementById('savings-results').classList.remove('show');
+            
+            const monthly = parseFloat(document.getElementById('savings-monthly').value) || 0;
+            const term = parseInt(document.getElementById('savings-term').value);
+            
+            if (monthly <= 0) {
+                showError('savings-error', 'Please enter a valid monthly savings amount.');
+                return;
+            }
+            
+            // Selected annual interest rate, compounded monthly
+            // 1% savings charge deducted from each monthly contribution
+            const annualRatePercent = parseInt(document.getElementById('savings-rate').value);
+            const annualRate = annualRatePercent / 100;
+            const monthlyRate = annualRate / 12;
+            const investChargeRate = 0.01;
+            const totalMonths = term * 12;
+            
+            // Net contribution after 1% savings charge
+            const netMonthly = monthly * (1 - investChargeRate);
+            
+            // Future Value of ordinary annuity: FV = P * [((1 + r)^n - 1) / r]
+            const maturityValue = netMonthly * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
+            const totalContributions = monthly * totalMonths;
+            const totalInvestCharge = monthly * investChargeRate * totalMonths;
+            const netContributions = netMonthly * totalMonths;
+            const interestEarned = maturityValue - netContributions;
+            
+            document.getElementById('savings-contribution').textContent = formatCurrency(monthly);
+            document.getElementById('savings-term-display').textContent = term + ' Years (' + totalMonths + ' months)';
+            document.getElementById('savings-rate-display').textContent = annualRatePercent;
+            document.getElementById('savings-total-contrib').textContent = formatCurrency(totalContributions);
+            document.getElementById('savings-charge').textContent = '- ' + formatCurrency(totalInvestCharge);
+            document.getElementById('savings-net-contrib').textContent = formatCurrency(netContributions);
+            document.getElementById('savings-interest').textContent = formatCurrency(interestEarned);
+            document.getElementById('savings-maturity').textContent = formatCurrency(maturityValue);
+            
+            document.getElementById('savings-results').classList.add('show');
+        }
+        
+        // GOOGLE SHEETS LOGGING
+        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyVQyxq1g3hyRHL6-Dq8uFoC4YwGYYN4egm-F3s1K1QoQAkd9QD37GlhGROLA2knNxzcw/exec';
+        
+        function logToGoogleSheet(quoteData) {
+            fetch(GOOGLE_SHEET_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(quoteData)
+            }).catch(err => console.log('Logging error:', err));
+        }
+        
         // PRINT FUNCTION
         function printQuote(product) {
+            // Populate agent and client details for print
+            document.getElementById('print-agent-name').textContent = document.getElementById('agent-name').value || '-';
+            document.getElementById('print-agent-city').textContent = document.getElementById('agent-city').value || '-';
+            document.getElementById('print-agent-phone').textContent = document.getElementById('agent-phone').value || '-';
+            document.getElementById('print-agent-email').textContent = document.getElementById('agent-email').value || '-';
+            document.getElementById('print-client-name').textContent = document.getElementById('client-name').value || '-';
+            document.getElementById('print-client-phone').textContent = document.getElementById('client-phone').value || '-';
+            document.getElementById('print-client-email').textContent = document.getElementById('client-email').value || '-';
+            
             // Set print date and time
             const now = new Date();
             const dateTimeStr = now.toLocaleDateString('en-GB', { 
@@ -1329,7 +1633,8 @@
                 'income': 'Income Protect',
                 'life': 'Life Protect',
                 'health': 'Health Protect',
-                'future': 'Future Protect'
+                'future': 'Future Protect',
+                'savings': 'Savings Calculator'
             };
             
             if (product === 'income') {
@@ -1384,9 +1689,75 @@
                     ${livesInfo}
                     <p><strong>Policy Term:</strong> ${term} Years</p>
                 `;
+            } else if (product === 'savings') {
+                const monthly = parseFloat(document.getElementById('savings-monthly').value).toLocaleString();
+                const term = document.getElementById('savings-term').value;
+                const rate = document.getElementById('savings-rate').value;
+                const totalContrib = document.getElementById('savings-total-contrib').textContent;
+                const investCharge = document.getElementById('savings-charge').textContent;
+                const netContrib = document.getElementById('savings-net-contrib').textContent;
+                const interest = document.getElementById('savings-interest').textContent;
+                const maturity = document.getElementById('savings-maturity').textContent;
+                summaryHTML = `
+                    <p><strong>Product:</strong> Savings Projection</p>
+                    <p><strong>Monthly Contribution:</strong> K ${monthly}</p>
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                    <p><strong>Interest Rate:</strong> ${rate}% p.a. | <strong>Savings Charge:</strong> 1% of savings</p>
+                    <p><strong>Total Contributions:</strong> ${totalContrib}</p>
+                    <p><strong>Savings Charge:</strong> ${investCharge}</p>
+                    <p><strong>Net Contributions:</strong> ${netContrib}</p>
+                    <p><strong>Interest Earned:</strong> ${interest}</p>
+                    <p><strong>Expected Maturity Value:</strong> ${maturity}</p>
+                `;
             }
             
             document.getElementById(product + '-summary').innerHTML = summaryHTML;
+            
+            // Log quote to Google Sheets for accountability
+            const quoteData = {
+                timestamp: new Date().toISOString(),
+                agentName: document.getElementById('agent-name').value || '',
+                agentCity: document.getElementById('agent-city').value || '',
+                agentPhone: document.getElementById('agent-phone').value || '',
+                agentEmail: document.getElementById('agent-email').value || '',
+                clientName: document.getElementById('client-name').value || '',
+                clientPhone: document.getElementById('client-phone').value || '',
+                clientEmail: document.getElementById('client-email').value || '',
+                product: productNames[product],
+                premium: document.getElementById(product + '-total')?.textContent || 
+                         document.getElementById('savings-maturity')?.textContent || ''
+            };
+            
+            // Add product-specific details
+            if (product === 'income') {
+                quoteData.age = document.getElementById('income-age').value;
+                quoteData.term = document.getElementById('income-term').value;
+                quoteData.sumAssured = document.getElementById('income-sa').value;
+                quoteData.coverage = document.getElementById('income-ptd-include').checked ? 'Death + PTD' : 'Death Only';
+            } else if (product === 'life') {
+                quoteData.age = document.getElementById('life-age').value;
+                quoteData.term = document.getElementById('life-term').value;
+                quoteData.sumAssured = document.getElementById('life-sa').value;
+                quoteData.coverage = 'Death Only';
+            } else if (product === 'health') {
+                quoteData.age = document.getElementById('health-age').value;
+                quoteData.term = document.getElementById('health-term').value;
+                quoteData.sumAssured = document.getElementById('health-sa').value;
+                const tierNames = {'0': 'None', '2500': 'K2,500', '5000': 'K5,000', '7500': 'K7,500'};
+                quoteData.coverage = 'Death + HCB (' + tierNames[document.getElementById('health-hcb-tier').value] + ')';
+            } else if (product === 'future') {
+                quoteData.age = document.getElementById('future-age1').value;
+                quoteData.term = document.getElementById('future-term').value;
+                quoteData.sumAssured = document.getElementById('future-sa1').value;
+                quoteData.coverage = document.getElementById('future-include-2nd').checked ? 'Joint Lives' : 'Single Life';
+            } else if (product === 'savings') {
+                quoteData.term = document.getElementById('savings-term').value;
+                quoteData.sumAssured = document.getElementById('savings-monthly').value;
+                quoteData.coverage = 'Savings @ ' + document.getElementById('savings-rate').value + '%';
+                quoteData.premium = document.getElementById('savings-maturity').textContent;
+            }
+            
+            logToGoogleSheet(quoteData);
             
             // Trigger print
             window.print();
