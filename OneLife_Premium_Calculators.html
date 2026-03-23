@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OneLife Protection Premium Calculators</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,179 +13,274 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #1a1a1a 100%);
+            font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(160deg, #0f0f0f 0%, #1a1a1a 30%, #252525 60%, #1a1a1a 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 30px 20px;
         }
         
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
         
         .logo-header {
             text-align: center;
-            margin-bottom: 30px;
-            padding: 20px 15px;
-            background: #ffffff;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            border-bottom: 4px solid #FFC829;
+            margin-bottom: 35px;
+            padding: 28px 20px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4), 0 0 80px rgba(255, 200, 41, 0.08);
+            border-bottom: 5px solid #FFC829;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .logo-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #FFC829, transparent);
         }
         
         .logo-header img {
-            max-width: 280px;
+            max-width: 260px;
             height: auto;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
         }
         
         .logo-header p {
-            margin-top: 10px;
+            margin-top: 12px;
             color: #1a1a1a;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
         }
         
         .tabs {
             display: flex;
             flex-wrap: wrap;
-            gap: 5px;
-            margin-bottom: 20px;
+            gap: 8px;
+            margin-bottom: 0;
+            padding: 0 5px;
         }
         
         .tab-btn {
-            padding: 12px 20px;
+            padding: 14px 22px;
             border: none;
-            background: rgba(255,255,255,0.15);
-            color: #fff;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
             cursor: pointer;
-            border-radius: 8px 8px 0 0;
-            font-size: 14px;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-top: 3px solid transparent;
+            border-radius: 14px 14px 0 0;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            border-bottom: none;
+            letter-spacing: 0.5px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 3px;
+            background: #FFC829;
+            border-radius: 3px 3px 0 0;
+            transition: width 0.3s ease;
         }
         
         .tab-btn:hover {
-            background: rgba(255,255,255,0.25);
-            border-top: 3px solid #FFC829;
+            background: rgba(255,255,255,0.15);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+        
+        .tab-btn:hover::after {
+            width: 60%;
         }
         
         .tab-btn.active {
-            background: #fff;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
             color: #1a1a1a;
-            font-weight: 600;
-            border-top: 3px solid #FFC829;
+            font-weight: 700;
+            border-color: #e0e0e0;
+            transform: translateY(-3px);
+            box-shadow: 0 -5px 20px rgba(255, 200, 41, 0.2);
+        }
+        
+        .tab-btn.active::after {
+            width: 80%;
+            height: 4px;
+            background: #FFC829;
         }
         
         .calculator {
             display: none;
-            background: #fff;
-            border-radius: 0 15px 15px 15px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-            border-top: 4px solid #FFC829;
+            background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+            border-radius: 0 20px 20px 20px;
+            padding: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 100px rgba(255, 200, 41, 0.05);
+            border-top: 5px solid #FFC829;
+            position: relative;
+        }
+        
+        .calculator::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 200, 41, 0.3), transparent);
         }
         
         .calculator.active {
             display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .calculator h2 {
             color: #1a1a1a;
-            margin-bottom: 5px;
-            font-size: 1.5rem;
+            margin-bottom: 8px;
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
         }
         
         .calculator .subtitle {
             color: #666;
-            margin-bottom: 25px;
-            font-size: 0.9rem;
+            margin-bottom: 28px;
+            font-size: 0.95rem;
+            font-weight: 400;
         }
         
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         
         .form-group label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
             color: #333;
-            font-weight: 500;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
         }
         
         .form-group input, .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            transition: border-color 0.3s ease;
+            padding: 14px 18px;
+            border: 2px solid #e8e8e8;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 500;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fafafa;
+            color: #1a1a1a;
+        }
+        
+        .form-group input::placeholder {
+            color: #aaa;
+            font-weight: 400;
+        }
+        
+        .form-group input:hover, .form-group select:hover {
+            border-color: #d0d0d0;
+            background: #fff;
         }
         
         .form-group input:focus, .form-group select:focus {
             outline: none;
             border-color: #FFC829;
-            box-shadow: 0 0 0 3px rgba(255, 200, 41, 0.2);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(255, 200, 41, 0.15), 0 4px 12px rgba(255, 200, 41, 0.1);
         }
         
         .checkbox-group {
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         
         .checkbox-label {
             display: flex;
             align-items: center;
             cursor: pointer;
+            padding: 14px 18px;
+            background: linear-gradient(145deg, #f8f9fa 0%, #f0f2f5 100%);
+            border-radius: 12px;
+            border: 2px solid #e8e8e8;
+            transition: all 0.3s ease;
+        }
+        
+        .checkbox-label:hover {
+            border-color: #FFC829;
+            background: linear-gradient(145deg, #fffdf5 0%, #fff9e6 100%);
         }
         
         .checkbox-label input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin-right: 12px;
+            width: 22px;
+            height: 22px;
+            margin-right: 14px;
             cursor: pointer;
             accent-color: #FFC829;
+            border-radius: 4px;
         }
         
         .checkbox-text {
-            font-weight: 500;
+            font-weight: 600;
             color: #333;
+            font-size: 0.95rem;
         }
         
         .hcb-section {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 2px solid #e0e0e0;
+            background: linear-gradient(145deg, #f8f9fa 0%, #f0f2f5 100%);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 22px;
+            border: 2px solid #e8e8e8;
         }
         
         .hcb-preview {
-            background: linear-gradient(135deg, #FFC829 0%, #E5B324 100%);
-            padding: 15px 20px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #FFC829 0%, #f5bc1e 50%, #e8b118 100%);
+            padding: 18px 24px;
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 15px;
+            margin-top: 18px;
+            box-shadow: 0 4px 15px rgba(255, 200, 41, 0.3);
         }
         
         .hcb-preview-label {
-            font-weight: 600;
+            font-weight: 700;
             color: #1a1a1a;
+            font-size: 0.95rem;
         }
         
         .hcb-preview-value {
-            font-size: 1.3rem;
-            font-weight: 700;
+            font-size: 1.4rem;
+            font-weight: 800;
             color: #1a1a1a;
         }
         
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 22px;
         }
         
         .form-row.three-col {
@@ -193,49 +289,92 @@
         
         .calculate-btn {
             width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #FFC829 0%, #E5B324 100%);
+            padding: 18px;
+            background: linear-gradient(135deg, #FFC829 0%, #f5bc1e 50%, #e8b118 100%);
             color: #1a1a1a;
             border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: 700;
+            border-radius: 14px;
+            font-size: 16px;
+            font-weight: 800;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-top: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 15px;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(255, 200, 41, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .calculate-btn::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
+            transform: rotate(45deg) translateX(-100%);
+            transition: transform 0.6s ease;
         }
         
         .calculate-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 25px rgba(255, 200, 41, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(255, 200, 41, 0.5);
+        }
+        
+        .calculate-btn:hover::before {
+            transform: rotate(45deg) translateX(100%);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(-1px);
         }
         
         .results {
-            margin-top: 25px;
-            padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            margin-top: 30px;
+            padding: 28px;
+            background: linear-gradient(145deg, #f8f9fa 0%, #f0f2f5 100%);
+            border-radius: 16px;
             display: none;
+            border: 2px solid #e0e0e0;
         }
         
         .results.show {
             display: block;
+            animation: resultsSlide 0.5s ease;
+        }
+        
+        @keyframes resultsSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .results h3 {
             color: #1a1a1a;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #FFC829;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 4px solid #FFC829;
+            font-size: 1.15rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
         }
         
         .result-row {
             display: flex;
             justify-content: space-between;
-            padding: 10px 0;
+            align-items: center;
+            padding: 14px 16px;
             border-bottom: 1px solid #e0e0e0;
+            background: #fff;
+            margin-bottom: 2px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+        }
+        
+        .result-row:hover {
+            background: #f8f9fa;
+            transform: translateX(3px);
         }
         
         .result-row:last-child {
@@ -244,76 +383,93 @@
         
         .result-row.total {
             font-weight: 700;
-            font-size: 1.2rem;
+            font-size: 1.25rem;
             color: #1a1a1a;
-            margin-top: 10px;
-            padding-top: 15px;
-            border-top: 3px solid #FFC829;
-            background: linear-gradient(90deg, rgba(255,200,41,0.15) 0%, rgba(255,200,41,0.05) 100%);
-            margin: 10px -10px 0;
-            padding: 15px 10px 10px;
-            border-radius: 0 0 8px 8px;
+            margin-top: 15px;
+            padding-top: 18px;
+            border-top: 4px solid #FFC829;
+            background: linear-gradient(90deg, rgba(255,200,41,0.2) 0%, rgba(255,200,41,0.08) 50%, rgba(255,200,41,0.2) 100%);
+            margin: 15px -12px 0;
+            padding: 18px 16px 14px;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 12px rgba(255, 200, 41, 0.15);
         }
         
         .result-label {
-            color: #666;
+            color: #555;
+            font-weight: 500;
         }
         
         .result-value {
-            color: #333;
-            font-weight: 600;
+            color: #1a1a1a;
+            font-weight: 700;
         }
         
         .error {
-            color: #dc3545;
-            background: #ffe6e6;
-            padding: 10px 15px;
-            border-radius: 8px;
-            margin-top: 15px;
+            color: #c62828;
+            background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-top: 18px;
             display: none;
+            border-left: 4px solid #c62828;
+            font-weight: 500;
         }
         
         .error.show {
             display: block;
+            animation: shake 0.4s ease;
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-5px); }
+            40%, 80% { transform: translateX(5px); }
         }
         
         .info-box {
-            background: #FFFAEB;
-            padding: 15px;
-            border-radius: 8px;
-            border-left: 4px solid #FFC829;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #FFFDF5 0%, #FFF9E6 100%);
+            padding: 18px 20px;
+            border-radius: 12px;
+            border-left: 5px solid #FFC829;
+            margin-bottom: 25px;
             font-size: 0.9rem;
             color: #1a1a1a;
+            box-shadow: 0 2px 8px rgba(255, 200, 41, 0.1);
+            font-weight: 500;
         }
         
         .note {
             font-size: 0.85rem;
-            color: #888;
-            margin-top: 5px;
+            color: #777;
+            margin-top: 6px;
+            font-style: italic;
         }
         
         .print-btn {
             width: 100%;
-            padding: 12px;
-            background: #1a1a1a;
+            padding: 16px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             color: #fff;
             border: 2px solid #FFC829;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 20px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            margin-top: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 10px;
+            letter-spacing: 0.5px;
         }
         
         .print-btn:hover {
-            background: #FFC829;
+            background: linear-gradient(135deg, #FFC829 0%, #e8b118 100%);
             color: #1a1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 200, 41, 0.4);
         }
         
         .print-btn svg {
@@ -345,11 +501,16 @@
                 padding: 0 !important;
             }
             
-            .container {
-                max-width: 100% !important;
+            /* Hide all input-related elements */
+            .tabs, .tab-btn, .calculate-btn, .print-btn, .form-group, .form-row, .info-box, .error {
+                display: none !important;
             }
             
-            .tabs, .tab-btn, .calculate-btn, .print-btn, .form-group, .form-row, .info-box, .error {
+            .section-toggle, .member-container, .entry-fields, .checkbox-group,
+            #funeral-children-container, #funeral-parents-container, #funeral-extended-container,
+            .funeral-members-table, select, input, label, h3:not(.results h3),
+            .funeral-members, .member-section, .member-header, .member-fields, .member-title,
+            .toggle-switch, .add-member-btn, .note, .age-info {
                 display: none !important;
             }
             
@@ -360,15 +521,11 @@
                 padding: 0 !important;
             }
             
-            .calculator.active {
-                display: block !important;
-            }
-            
-            .calculator h2, .calculator .subtitle {
+            .calculator h2, .calculator .subtitle, .calculator > p {
                 display: none !important;
             }
             
-            .calculator > h3, .calculator > div > h3, #future-2nd-life-section h3, .checkbox-group {
+            .calculator > h3, .calculator > div > h3, #future-2nd-life-section h3, #future-2nd-life-section {
                 display: none !important;
             }
             
@@ -404,31 +561,108 @@
                 font-size: 0.85rem;
             }
             
+            /* Use display:contents to flatten hierarchy for flexbox ordering */
+            .container {
+                display: flex !important;
+                flex-direction: column;
+                max-width: 100% !important;
+            }
+            
+            .calculator {
+                display: none !important;
+            }
+            
+            .calculator.active {
+                display: contents !important;
+            }
+            
             .results {
-                display: block !important;
-                box-shadow: none !important;
-                border: 1px solid #ddd !important;
-                margin-top: 15px !important;
+                display: none !important;
             }
             
             .results.show {
-                display: flex !important;
-                flex-direction: column;
+                display: contents !important;
+            }
+            
+            .results h3 {
+                display: block !important;
+                width: 100%;
+                font-size: 1.1rem;
+                padding-bottom: 8px;
+                border-bottom: 2px solid #FFC829;
+                margin-bottom: 10px;
             }
             
             .print-summary {
                 display: block !important;
+                width: 100%;
             }
             
-            /* Print ordering */
-            .results .quote-title { order: 1; }
-            .results .quote-disclaimer { order: 2; }
-            .results .print-summary { order: 3; }
-            .results h3 { order: 4; margin-top: 10px; }
-            .results .breakdown-section { order: 5; width: 100%; }
-            .results .result-row.total { order: 6; width: 100%; }
-            .results .print-footer { order: 7; width: 100%; }
-            .results .print-btn { display: none !important; }
+            /* Funeral results table print styles */
+            .funeral-results-table-container {
+                display: block !important;
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .funeral-results-table {
+                display: table !important;
+                width: 100% !important;
+            }
+            
+            .funeral-results-table th,
+            .funeral-results-table td {
+                display: table-cell !important;
+                padding: 8px !important;
+                border: 1px solid #ddd !important;
+            }
+            
+            /* Funeral totals grid styling for print */
+            .funeral-totals {
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .funeral-totals .totals-grid {
+                display: grid !important;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+            
+            .funeral-totals .total-item {
+                border: 2px solid #1a1a1a;
+                border-radius: 8px;
+                padding: 10px;
+                text-align: center;
+            }
+            
+            .funeral-totals .total-label {
+                display: block;
+                font-size: 0.75rem;
+                text-transform: uppercase;
+                color: #666;
+            }
+            
+            .funeral-totals .total-value {
+                display: block;
+                font-size: 1.2rem;
+                font-weight: 700;
+                color: #1a1a1a;
+            }
+            
+            /* Print ordering - flattened hierarchy */
+            .logo-header { order: 1 !important; width: 100%; }
+            .quote-title { order: 2 !important; width: 100%; }
+            .quote-disclaimer { order: 3 !important; width: 100%; }
+            .print-quote-details { order: 4 !important; width: 100%; }
+            .print-summary { order: 5 !important; }
+            .results h3 { order: 6 !important; }
+            .funeral-results-table-container { order: 7 !important; }
+            .funeral-totals { order: 8 !important; }
+            .breakdown-section { order: 7 !important; width: 100%; }
+            .result-row.total { order: 8 !important; width: 100%; }
+            .print-footer { order: 99 !important; width: 100%; }
+            .print-btn { display: none !important; }
             
             .logo-header {
                 box-shadow: none !important;
@@ -500,62 +734,430 @@
         }
         
         .quote-details {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 20px;
-            border: 1px solid #e0e0e0;
+            background: linear-gradient(145deg, #f8f9fa 0%, #f0f2f5 100%);
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 25px;
+            border: 2px solid #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .quote-details::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #FFC829, #e8b118, #FFC829);
         }
         
         .quote-details h3 {
             color: #1a1a1a;
-            margin-bottom: 15px;
+            margin-bottom: 18px;
             font-size: 1.1rem;
-            border-left: 4px solid #FFC829;
-            padding-left: 10px;
+            font-weight: 700;
+            border-left: 5px solid #FFC829;
+            padding-left: 12px;
+            letter-spacing: 0.3px;
         }
         
         .quote-details .form-row {
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
         
         .quote-details .form-group input {
             font-size: 0.9rem;
-            padding: 10px 12px;
+            padding: 12px 14px;
+            background: #fff;
         }
         
         .quote-details label {
             font-size: 0.85rem;
+            font-weight: 600;
         }
         
         .details-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 30px;
+            gap: 35px;
         }
         
         .details-section h4 {
             color: #1a1a1a;
             font-size: 0.95rem;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
-            border-bottom: 2px solid #FFC829;
+            font-weight: 700;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #FFC829;
         }
 
-        @media (max-width: 600px) {
+        /* Funeral Product Styles */
+        .funeral-members {
+            margin-top: 25px;
+        }
+        
+        .member-section {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 16px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .member-section:hover {
+            border-color: #FFC829;
+            box-shadow: 0 4px 16px rgba(255, 200, 41, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .member-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .member-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 56px;
+            height: 30px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-switch .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #d0d0d0 0%, #c0c0c0 100%);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 30px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .toggle-switch .slider:before {
+            position: absolute;
+            content: "";
+            height: 24px;
+            width: 24px;
+            left: 3px;
+            bottom: 3px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        }
+        
+        .toggle-switch input:checked + .slider {
+            background: linear-gradient(135deg, #FFC829 0%, #e8b118 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1), 0 0 12px rgba(255, 200, 41, 0.4);
+        }
+        
+        .toggle-switch input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        .member-fields {
+            display: none;
+            padding-top: 18px;
+            margin-top: 18px;
+            border-top: 2px dashed #e0e0e0;
+        }
+        
+        .member-fields.active {
+            display: block;
+        }
+        
+        .age-info {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 6px;
+            font-style: italic;
+            font-weight: 500;
+        }
+        
+        .children-container, .parents-container, .extended-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+        }
+        
+        .member-entry {
+            background: linear-gradient(145deg, #ffffff 0%, #fafafa 100%);
+            padding: 16px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+        
+        .member-entry:hover {
+            border-color: #FFC829;
+            box-shadow: 0 4px 12px rgba(255, 200, 41, 0.15);
+        }
+        
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .entry-header span {
+            color: #1a1a1a;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+        
+        .entry-fields {
+            margin-top: 8px;
+        }
+        
+        .entry-fields label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        
+        .entry-fields input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            background: #fafafa;
+            color: #1a1a1a;
+            transition: all 0.3s ease;
+        }
+        
+        .entry-fields input::placeholder {
+            color: #aaa;
+        }
+        
+        .entry-fields input:hover {
+            border-color: #d0d0d0;
+            background: #fff;
+        }
+        
+        .entry-fields input:focus {
+            outline: none;
+            border-color: #FFC829;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(255, 200, 41, 0.15);
+        }
+        
+        .remove-btn {
+            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+        
+        .remove-btn:hover {
+            background: linear-gradient(135deg, #e53935 0%, #d32f2f 100%);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(229, 57, 53, 0.3);
+        }
+        
+        .add-member-btn {
+            background: linear-gradient(135deg, #66bb6a 0%, #4caf50 100%);
+            color: white;
+            border: none;
+            padding: 12px 22px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.3);
+        }
+        
+        .add-member-btn:hover {
+            background: linear-gradient(135deg, #4caf50 0%, #43a047 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+        }
+        
+        .funeral-results-table-container {
+            overflow-x: auto;
+            margin-bottom: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+        
+        .funeral-results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+            background: #fff;
+        }
+        
+        .funeral-results-table th,
+        .funeral-results-table td {
+            padding: 14px 16px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .funeral-results-table th {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            font-weight: 700;
+            color: #fff;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+        
+        .funeral-results-table th:first-child {
+            border-radius: 12px 0 0 0;
+        }
+        
+        .funeral-results-table th:last-child {
+            border-radius: 0 12px 0 0;
+        }
+        
+        .funeral-results-table tbody tr {
+            transition: all 0.2s ease;
+        }
+        
+        .funeral-results-table tbody tr:hover {
+            background: linear-gradient(90deg, rgba(255, 200, 41, 0.08) 0%, rgba(255, 200, 41, 0.03) 100%);
+        }
+        
+        .funeral-results-table tbody tr:last-child td:first-child {
+            border-radius: 0 0 0 12px;
+        }
+        
+        .funeral-results-table tbody tr:last-child td:last-child {
+            border-radius: 0 0 12px 0;
+        }
+        
+        .funeral-results-table .subtotal-row {
+            background: linear-gradient(135deg, #f5f5f5 0%, #ececec 100%);
+            font-weight: 700;
+        }
+        
+        .funeral-results-table .fee-row {
+            color: #666;
+            font-style: italic;
+        }
+        
+        .funeral-results-table .total-row {
+            background: linear-gradient(135deg, #FFC829 0%, #e8b118 100%);
+            font-weight: 800;
+        }
+        
+        .funeral-results-table .total-row td {
+            padding: 16px;
+            border-bottom: none;
+            color: #1a1a1a;
+        }
+        
+        .funeral-totals {
+            margin-top: 24px;
+            padding: 24px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            border: 2px solid #e0e0e0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+        }
+        
+        .totals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+        }
+        
+        .total-item {
+            text-align: center;
+            padding: 20px 14px;
+            background: linear-gradient(145deg, #1a1a1a 0%, #2d2d2d 100%);
+            border-radius: 14px;
+            border: 2px solid #333;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .total-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(255, 200, 41, 0.2);
+            border-color: #FFC829;
+        }
+        
+        .total-label {
+            display: block;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.7);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+        
+        .total-value {
+            font-size: 1.3rem;
+            font-weight: 800;
+            color: #FFC829;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .calculator {
+                padding: 25px 20px;
+                border-radius: 0 16px 16px 16px;
+            }
             .form-row, .form-row.three-col {
                 grid-template-columns: 1fr;
+                gap: 16px;
             }
             .details-row {
                 grid-template-columns: 1fr;
-                gap: 15px;
+                gap: 20px;
             }
             .tabs {
                 justify-content: center;
             }
             .tab-btn {
-                font-size: 12px;
-                padding: 10px 12px;
+                font-size: 11px;
+                padding: 10px 14px;
+            }
+            .totals-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .children-container, .parents-container, .extended-container {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -578,18 +1180,28 @@
                             <input type="text" id="agent-name" placeholder="Enter agent name">
                         </div>
                         <div class="form-group">
-                            <label for="agent-city">City/Branch</label>
-                            <input type="text" id="agent-city" placeholder="Enter city or branch">
+                            <label for="agent-code">Agent Code</label>
+                            <input type="text" id="agent-code" placeholder="Enter agent code">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
+                            <label for="agent-city">City/Branch</label>
+                            <input type="text" id="agent-city" placeholder="Enter city or branch">
+                        </div>
+                        <div class="form-group">
                             <label for="agent-phone">Phone Number</label>
                             <input type="tel" id="agent-phone" placeholder="Enter phone number">
                         </div>
+                    </div>
+                    <div class="form-row">
                         <div class="form-group">
                             <label for="agent-email">Email Address</label>
                             <input type="email" id="agent-email" placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="quotation-date">Quotation Date</label>
+                            <input type="date" id="quotation-date">
                         </div>
                     </div>
                 </div>
@@ -605,9 +1217,15 @@
                             <input type="tel" id="client-phone" placeholder="Enter phone number">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label for="client-email">Email Address</label>
-                        <input type="email" id="client-email" placeholder="Enter email address">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="client-email">Email Address</label>
+                            <input type="email" id="client-email" placeholder="Enter email address">
+                        </div>
+                        <div class="form-group">
+                            <label for="client-employer">Employer</label>
+                            <input type="text" id="client-employer" placeholder="Enter employer name">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -618,6 +1236,7 @@
                 <div>
                     <h4>Agent Information</h4>
                     <p><strong>Name:</strong> <span id="print-agent-name"></span></p>
+                    <p><strong>Code:</strong> <span id="print-agent-code"></span></p>
                     <p><strong>City/Branch:</strong> <span id="print-agent-city"></span></p>
                     <p><strong>Phone:</strong> <span id="print-agent-phone"></span></p>
                     <p><strong>Email:</strong> <span id="print-agent-email"></span></p>
@@ -627,6 +1246,8 @@
                     <p><strong>Name:</strong> <span id="print-client-name"></span></p>
                     <p><strong>Phone:</strong> <span id="print-client-phone"></span></p>
                     <p><strong>Email:</strong> <span id="print-client-email"></span></p>
+                    <p><strong>Employer:</strong> <span id="print-client-employer"></span></p>
+                    <p><strong>Quote Date:</strong> <span id="print-quotation-date"></span></p>
                 </div>
             </div>
         </div>
@@ -636,6 +1257,7 @@
             <button class="tab-btn" onclick="showCalculator('life')">Life Protect</button>
             <button class="tab-btn" onclick="showCalculator('health')">Health Protect</button>
             <button class="tab-btn" onclick="showCalculator('future')">Future Protect</button>
+            <button class="tab-btn" onclick="showCalculator('funeral')">Funeral Product</button>
             <button class="tab-btn" onclick="showCalculator('savings')">Savings Calculator</button>
         </div>
 
@@ -1023,6 +1645,197 @@
             </div>
         </div>
 
+        <!-- FUNERAL PRODUCT CALCULATOR -->
+        <div id="funeral" class="calculator">
+            <h2>Funeral Product Calculator</h2>
+            <p class="subtitle">Funeral Insurance Coverage | Ages 0-70</p>
+            
+            <div class="info-box">
+                <strong>Coverage:</strong> Funeral benefit for main member, spouse, children, parents/parents-in-law, and extended family
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="funeral-term">Policy Term (Years)</label>
+                    <select id="funeral-term">
+                        <option value="3">3 Years</option>
+                        <option value="5" selected>5 Years</option>
+                        <option value="7">7 Years</option>
+                        <option value="10">10 Years</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="funeral-sa">Sum Assured - Main Member, Spouse & Children (K)</label>
+                    <select id="funeral-sa" onchange="updateFamilySA()">
+                        <option value="5000" selected>5,000</option>
+                        <option value="10000">10,000</option>
+                        <option value="20000">20,000</option>
+                        <option value="30000">30,000</option>
+                        <option value="50000">50,000</option>
+                        <option value="75000">75,000</option>
+                        <option value="100000">100,000</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="funeral-sa-family">Sum Assured - Parents & Extended Family (K)</label>
+                    <select id="funeral-sa-family">
+                        <option value="2500" selected>2,500</option>
+                        <option value="5000">5,000</option>
+                        <option value="10000">10,000</option>
+                        <option value="15000">15,000</option>
+                        <option value="25000">25,000</option>
+                        <option value="37500">37,500</option>
+                        <option value="50000">50,000</option>
+                    </select>
+                    <span class="age-info">Auto-selected at 50% of Main Member SA</span>
+                </div>
+                <div class="form-group">
+                    <p class="note" style="padding-top: 25px;">Children use the same sum assured as Main Member/Spouse</p>
+                </div>
+            </div>
+            
+            <!-- Member Sections -->
+            <div class="funeral-members">
+                <!-- Main Member -->
+                <div class="member-section">
+                    <div class="member-header">
+                        <span class="member-title">Main Member (Age 18-65)</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="funeral-main-toggle" checked onchange="toggleFuneralMember('main')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="member-fields active" id="funeral-main-fields">
+                        <div class="form-group" style="max-width: 200px;">
+                            <label for="funeral-main-age">Age</label>
+                            <input type="number" id="funeral-main-age" min="18" max="65" placeholder="18 - 65" value="30">
+                            <span class="age-info">Valid: 18 - 65 years</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Spouse -->
+                <div class="member-section">
+                    <div class="member-header">
+                        <span class="member-title">Spouse (Age 18-65)</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="funeral-spouse-toggle" onchange="toggleFuneralMember('spouse')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="member-fields" id="funeral-spouse-fields">
+                        <div class="form-group" style="max-width: 200px;">
+                            <label for="funeral-spouse-age">Age</label>
+                            <input type="number" id="funeral-spouse-age" min="18" max="65" placeholder="18 - 65">
+                            <span class="age-info">Valid: 18 - 65 years</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Children -->
+                <div class="member-section">
+                    <div class="member-header">
+                        <span class="member-title">Children (Age 0-21) - Maximum 6</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="funeral-children-toggle" onchange="toggleFuneralMember('children')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="member-fields" id="funeral-children-fields">
+                        <div class="children-container" id="funeral-children-container"></div>
+                        <button type="button" class="add-member-btn" id="funeral-add-child-btn" onclick="addFuneralChild()">+ Add Child</button>
+                    </div>
+                </div>
+                
+                <!-- Parents -->
+                <div class="member-section">
+                    <div class="member-header">
+                        <span class="member-title">Parents / Parents-in-law (Age 0-70) - Maximum 4</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="funeral-parents-toggle" onchange="toggleFuneralMember('parents')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="member-fields" id="funeral-parents-fields">
+                        <div class="parents-container" id="funeral-parents-container"></div>
+                        <button type="button" class="add-member-btn" id="funeral-add-parent-btn" onclick="addFuneralParent()">+ Add Parent</button>
+                    </div>
+                </div>
+                
+                <!-- Extended Family -->
+                <div class="member-section">
+                    <div class="member-header">
+                        <span class="member-title">Extended Family (Age 0-70) - Maximum 8</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="funeral-extended-toggle" onchange="toggleFuneralMember('extended')">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="member-fields" id="funeral-extended-fields">
+                        <div class="extended-container" id="funeral-extended-container"></div>
+                        <button type="button" class="add-member-btn" id="funeral-add-extended-btn" onclick="addFuneralExtended()">+ Add Extended Family Member</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="error" id="funeral-error"></div>
+            
+            <button class="calculate-btn" onclick="calculateFuneral()">Calculate Premium</button>
+            
+            <div class="results" id="funeral-results">
+                <h3>Premium Breakdown</h3>
+                
+                <div class="funeral-results-table-container">
+                    <table class="funeral-results-table">
+                        <thead>
+                            <tr>
+                                <th>Member</th>
+                                <th>Age</th>
+                                <th>Sum Assured</th>
+                                <th>Monthly Premium</th>
+                            </tr>
+                        </thead>
+                        <tbody id="funeral-results-body"></tbody>
+                    </table>
+                </div>
+                
+                <div class="funeral-totals">
+                    <div class="totals-grid">
+                        <div class="total-item">
+                            <span class="total-label">Monthly</span>
+                            <span class="total-value" id="funeral-total-monthly">K 0.00</span>
+                        </div>
+                        <div class="total-item">
+                            <span class="total-label">Quarterly</span>
+                            <span class="total-value" id="funeral-total-quarterly">K 0.00</span>
+                        </div>
+                        <div class="total-item">
+                            <span class="total-label">Semi-Annual</span>
+                            <span class="total-value" id="funeral-total-semiannual">K 0.00</span>
+                        </div>
+                        <div class="total-item">
+                            <span class="total-label">Annual</span>
+                            <span class="total-value" id="funeral-total-annual">K 0.00</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <button class="print-btn" onclick="printQuote('funeral')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                    </svg>
+                    Print / Save as PDF
+                </button>
+                <div class="quote-title">PREMIUM QUOTE</div>
+                <div class="quote-disclaimer">This is a quotation only and not a contract of insurance</div>
+                <div class="print-summary" id="funeral-summary"></div>
+                <div class="print-footer">OneLife Assurance | one.co.zm | Quote Date: <span class="print-date"></span> | Valid for 30 days</div>
+            </div>
+        </div>
+
         <!-- SAVINGS CALCULATOR -->
         <div id="savings" class="calculator">
             <h2>Savings Calculator</h2>
@@ -1315,9 +2128,92 @@
             55: {3: 4.580, 5: 4.870, 7: 5.185, 10: 5.644}
         };
         
+        // Funeral Product - Rate Table (rates per K1,000 sum assured by age and term)
+        const funeralRates = {
+            0: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            1: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            2: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            3: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            4: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            5: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            6: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.399 },
+            7: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.405 },
+            8: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.417 },
+            9: { 3: 0.448, 5: 0.423, 7: 0.41, 10: 0.436 },
+            10: { 3: 0.448, 5: 0.423, 7: 0.421, 10: 0.461 },
+            11: { 3: 0.448, 5: 0.423, 7: 0.444, 10: 0.495 },
+            12: { 3: 0.448, 5: 0.44, 7: 0.478, 10: 0.54 },
+            13: { 3: 0.448, 5: 0.479, 7: 0.523, 10: 0.597 },
+            14: { 3: 0.484, 5: 0.534, 7: 0.585, 10: 0.665 },
+            15: { 3: 0.561, 5: 0.61, 7: 0.668, 10: 0.742 },
+            16: { 3: 0.674, 5: 0.713, 7: 0.774, 10: 0.824 },
+            17: { 3: 0.755, 5: 0.805, 7: 0.862, 10: 0.885 },
+            18: { 3: 0.811, 5: 0.883, 7: 0.928, 10: 0.926 },
+            19: { 3: 0.828, 5: 0.924, 7: 0.95, 10: 0.936 },
+            20: { 3: 0.822, 5: 0.929, 7: 0.938, 10: 0.922 },
+            21: { 3: 0.852, 5: 0.932, 7: 0.93, 10: 0.913 },
+            22: { 3: 0.899, 5: 0.936, 7: 0.927, 10: 0.909 },
+            23: { 3: 0.894, 5: 0.915, 7: 0.907, 10: 0.893 },
+            24: { 3: 0.861, 5: 0.884, 7: 0.88, 10: 0.874 },
+            25: { 3: 0.82, 5: 0.851, 7: 0.854, 10: 0.856 },
+            26: { 3: 0.795, 5: 0.831, 7: 0.84, 10: 0.849 },
+            27: { 3: 0.783, 5: 0.823, 7: 0.837, 10: 0.851 },
+            28: { 3: 0.777, 5: 0.822, 7: 0.84, 10: 0.859 },
+            29: { 3: 0.78, 5: 0.828, 7: 0.85, 10: 0.873 },
+            30: { 3: 0.789, 5: 0.84, 7: 0.866, 10: 0.893 },
+            31: { 3: 0.804, 5: 0.859, 7: 0.887, 10: 0.917 },
+            32: { 3: 0.825, 5: 0.882, 7: 0.913, 10: 0.944 },
+            33: { 3: 0.851, 5: 0.91, 7: 0.943, 10: 0.976 },
+            34: { 3: 0.883, 5: 0.943, 7: 0.976, 10: 1.01 },
+            35: { 3: 0.917, 5: 0.978, 7: 1.012, 10: 1.046 },
+            36: { 3: 0.955, 5: 1.016, 7: 1.05, 10: 1.083 },
+            37: { 3: 0.997, 5: 1.057, 7: 1.09, 10: 1.122 },
+            38: { 3: 1.042, 5: 1.1, 7: 1.132, 10: 1.163 },
+            39: { 3: 1.086, 5: 1.142, 7: 1.172, 10: 1.207 },
+            40: { 3: 1.133, 5: 1.186, 7: 1.214, 10: 1.256 },
+            41: { 3: 1.18, 5: 1.228, 7: 1.258, 10: 1.312 },
+            42: { 3: 1.226, 5: 1.271, 7: 1.307, 10: 1.375 },
+            43: { 3: 1.324, 5: 1.352, 7: 1.391, 10: 1.469 },
+            44: { 3: 1.373, 5: 1.41, 7: 1.462, 10: 1.556 },
+            45: { 3: 1.43, 5: 1.482, 7: 1.548, 10: 1.657 },
+            46: { 3: 1.507, 5: 1.575, 7: 1.653, 10: 1.776 },
+            47: { 3: 1.61, 5: 1.69, 7: 1.779, 10: 1.915 },
+            48: { 3: 1.738, 5: 1.828, 7: 1.925, 10: 2.074 },
+            49: { 3: 1.888, 5: 1.985, 7: 2.089, 10: 2.252 },
+            50: { 3: 2.06, 5: 2.16, 7: 2.273, 10: 2.449 },
+            51: { 3: 2.25, 5: 2.353, 7: 2.475, 10: 2.665 },
+            52: { 3: 2.457, 5: 2.565, 7: 2.697, 10: 2.902 },
+            53: { 3: 2.653, 5: 2.778, 7: 2.924, 10: 3.148 },
+            54: { 3: 2.888, 5: 3.025, 7: 3.183, 10: 3.424 },
+            55: { 3: 3.15, 5: 3.297, 7: 3.467, 10: 3.726 },
+            56: { 3: 3.44, 5: 3.596, 7: 3.778, 10: 4.056 },
+            57: { 3: 3.756, 5: 3.921, 7: 4.117, 10: 4.414 },
+            58: { 3: 4.1, 5: 4.275, 7: 4.486, 10: 4.803 },
+            59: { 3: 4.475, 5: 4.662, 7: 4.887, 10: 5.225 },
+            60: { 3: 4.885, 5: 5.082, 7: 5.323, 10: 5.683 },
+            61: { 3: 5.333, 5: 5.541, 7: 5.798, 10: 6.18 },
+            62: { 3: 5.821, 5: 6.04, 7: 6.313, 10: 6.719 },
+            63: { 3: 6.352, 5: 6.584, 7: 6.874, 10: 7.303 },
+            64: { 3: 6.933, 5: 7.176, 7: 7.484, 10: 7.937 },
+            65: { 3: 7.565, 5: 7.82, 7: 8.146, 10: 8.622 },
+            66: { 3: 8.256, 5: 8.522, 7: 8.866, 10: 9.365 },
+            67: { 3: 9.007, 5: 9.284, 7: 9.646, 10: 10.168 },
+            68: { 3: 9.827, 5: 10.114, 7: 10.494, 10: 11.037 },
+            69: { 3: 10.72, 5: 11.016, 7: 11.414, 10: 11.977 },
+            70: { 3: 11.694, 5: 11.997, 7: 12.412, 10: 12.993 }
+        };
+        
         const POLICY_FEE = 35;
+        const POLICY_FEE_QUARTERLY = 140;
+        const POLICY_FEE_SEMIANNUAL = 210;
+        const POLICY_FEE_ANNUAL = 420;
         const LEVY_RATE = 0.05;
         const INVEST_CHARGE_RATE = 0.01;
+        
+        // Frequency multipliers with built-in discounts
+        const QUARTERLY_MULTIPLIER = 2.964;      // ~1.2% discount
+        const SEMIANNUAL_MULTIPLIER = 5.88;      // ~2% discount
+        const ANNUAL_MULTIPLIER = 11.592;        // ~3.4% discount
         
         function formatCurrency(amount) {
             return 'K ' + amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -1590,8 +2486,300 @@
             document.getElementById('savings-results').classList.add('show');
         }
         
+        // FUNERAL PRODUCT CALCULATOR
+        let funeralChildCount = 0;
+        let funeralParentCount = 0;
+        let funeralExtendedCount = 0;
+
+        // Auto-select family SA at 50% of main member SA
+        function updateFamilySA() {
+            const mainSA = parseInt(document.getElementById('funeral-sa').value);
+            const familySA = mainSA / 2; // 50% rule
+            const familyDropdown = document.getElementById('funeral-sa-family');
+            
+            // Find and select the matching option
+            for (let option of familyDropdown.options) {
+                if (parseInt(option.value) === familySA) {
+                    familyDropdown.value = option.value;
+                    break;
+                }
+            }
+        }
+
+        function toggleFuneralMember(memberId) {
+            const toggle = document.getElementById('funeral-' + memberId + '-toggle');
+            const fields = document.getElementById('funeral-' + memberId + '-fields');
+            if (toggle.checked) {
+                fields.style.display = 'block';
+                // Auto-add first entry for children, parents, extended
+                if (memberId === 'children' && funeralChildCount === 0) {
+                    addFuneralChild();
+                } else if (memberId === 'parents' && funeralParentCount === 0) {
+                    addFuneralParent();
+                } else if (memberId === 'extended' && funeralExtendedCount === 0) {
+                    addFuneralExtended();
+                }
+            } else {
+                fields.style.display = 'none';
+            }
+        }
+
+        function addFuneralChild() {
+            if (funeralChildCount >= 6) {
+                alert('Maximum 6 children allowed');
+                return;
+            }
+            funeralChildCount++;
+            const container = document.getElementById('funeral-children-container');
+            const childDiv = document.createElement('div');
+            childDiv.className = 'member-entry';
+            childDiv.id = 'funeral-child-' + funeralChildCount;
+            childDiv.innerHTML = `
+                <div class="entry-header">
+                    <span>Child ${funeralChildCount}</span>
+                    <button type="button" class="remove-btn" onclick="removeFuneralChild(${funeralChildCount})">Remove</button>
+                </div>
+                <div class="entry-fields">
+                    <label>Age (0-21):</label>
+                    <input type="number" id="funeral-child-age-${funeralChildCount}" min="0" max="21" placeholder="Age">
+                </div>
+            `;
+            container.appendChild(childDiv);
+        }
+
+        function removeFuneralChild(index) {
+            const child = document.getElementById('funeral-child-' + index);
+            if (child) {
+                child.remove();
+                renumberFuneralChildren();
+            }
+        }
+
+        function renumberFuneralChildren() {
+            const container = document.getElementById('funeral-children-container');
+            const children = container.querySelectorAll('.member-entry');
+            funeralChildCount = children.length;
+            children.forEach((child, idx) => {
+                const num = idx + 1;
+                child.id = 'funeral-child-' + num;
+                child.querySelector('.entry-header span').textContent = 'Child ' + num;
+                child.querySelector('.remove-btn').setAttribute('onclick', 'removeFuneralChild(' + num + ')');
+                child.querySelector('input[type="number"]').id = 'funeral-child-age-' + num;
+            });
+        }
+
+        function addFuneralParent() {
+            if (funeralParentCount >= 4) {
+                alert('Maximum 4 parents allowed');
+                return;
+            }
+            funeralParentCount++;
+            const container = document.getElementById('funeral-parents-container');
+            const parentDiv = document.createElement('div');
+            parentDiv.className = 'member-entry';
+            parentDiv.id = 'funeral-parent-' + funeralParentCount;
+            parentDiv.innerHTML = `
+                <div class="entry-header">
+                    <span>Parent ${funeralParentCount}</span>
+                    <button type="button" class="remove-btn" onclick="removeFuneralParent(${funeralParentCount})">Remove</button>
+                </div>
+                <div class="entry-fields">
+                    <label>Age (0-70):</label>
+                    <input type="number" id="funeral-parent-age-${funeralParentCount}" min="0" max="70" placeholder="Age">
+                </div>
+            `;
+            container.appendChild(parentDiv);
+        }
+
+        function removeFuneralParent(index) {
+            const parent = document.getElementById('funeral-parent-' + index);
+            if (parent) {
+                parent.remove();
+                renumberFuneralParents();
+            }
+        }
+
+        function renumberFuneralParents() {
+            const container = document.getElementById('funeral-parents-container');
+            const parents = container.querySelectorAll('.member-entry');
+            funeralParentCount = parents.length;
+            parents.forEach((parent, idx) => {
+                const num = idx + 1;
+                parent.id = 'funeral-parent-' + num;
+                parent.querySelector('.entry-header span').textContent = 'Parent ' + num;
+                parent.querySelector('.remove-btn').setAttribute('onclick', 'removeFuneralParent(' + num + ')');
+                parent.querySelector('input[type="number"]').id = 'funeral-parent-age-' + num;
+            });
+        }
+
+        function addFuneralExtended() {
+            if (funeralExtendedCount >= 8) {
+                alert('Maximum 8 extended family members allowed');
+                return;
+            }
+            funeralExtendedCount++;
+            const container = document.getElementById('funeral-extended-container');
+            const extDiv = document.createElement('div');
+            extDiv.className = 'member-entry';
+            extDiv.id = 'funeral-extended-' + funeralExtendedCount;
+            extDiv.innerHTML = `
+                <div class="entry-header">
+                    <span>Extended ${funeralExtendedCount}</span>
+                    <button type="button" class="remove-btn" onclick="removeFuneralExtended(${funeralExtendedCount})">Remove</button>
+                </div>
+                <div class="entry-fields">
+                    <label>Age (0-70):</label>
+                    <input type="number" id="funeral-extended-age-${funeralExtendedCount}" min="0" max="70" placeholder="Age">
+                </div>
+            `;
+            container.appendChild(extDiv);
+        }
+
+        function removeFuneralExtended(index) {
+            const ext = document.getElementById('funeral-extended-' + index);
+            if (ext) {
+                ext.remove();
+                renumberFuneralExtended();
+            }
+        }
+
+        function renumberFuneralExtended() {
+            const container = document.getElementById('funeral-extended-container');
+            const extendeds = container.querySelectorAll('.member-entry');
+            funeralExtendedCount = extendeds.length;
+            extendeds.forEach((ext, idx) => {
+                const num = idx + 1;
+                ext.id = 'funeral-extended-' + num;
+                ext.querySelector('.entry-header span').textContent = 'Extended ' + num;
+                ext.querySelector('.remove-btn').setAttribute('onclick', 'removeFuneralExtended(' + num + ')');
+                ext.querySelector('input[type="number"]').id = 'funeral-extended-age-' + num;
+            });
+        }
+
+        function calculateFuneral() {
+            hideError('funeral-error');
+            document.getElementById('funeral-results').classList.remove('show');
+
+            const term = parseInt(document.getElementById('funeral-term').value);
+            const mainSA = parseInt(document.getElementById('funeral-sa').value);
+            const familySA = parseInt(document.getElementById('funeral-sa-family').value);
+
+            // Validate main member
+            const mainAge = parseInt(document.getElementById('funeral-main-age').value);
+            if (isNaN(mainAge) || mainAge < 18 || mainAge > 65) {
+                showError('funeral-error', 'Main member age must be between 18 and 65.');
+                return;
+            }
+
+            let results = [];
+            let totalMonthly = 0;
+
+            // Calculate Main Member
+            const mainRate = funeralRates[mainAge][term];
+            const mainPremium = (mainSA / 1000) * mainRate;
+            totalMonthly += mainPremium;
+            results.push({ member: 'Main Member', age: mainAge, sa: mainSA, premium: mainPremium });
+
+            // Calculate Spouse if enabled (same SA as main member)
+            if (document.getElementById('funeral-spouse-toggle').checked) {
+                const spouseAge = parseInt(document.getElementById('funeral-spouse-age').value);
+                if (isNaN(spouseAge) || spouseAge < 18 || spouseAge > 65) {
+                    showError('funeral-error', 'Spouse age must be between 18 and 65.');
+                    return;
+                }
+                const spouseRate = funeralRates[spouseAge][term];
+                const spousePremium = (mainSA / 1000) * spouseRate;
+                totalMonthly += spousePremium;
+                results.push({ member: 'Spouse', age: spouseAge, sa: mainSA, premium: spousePremium });
+            }
+
+            // Calculate Children (same SA as main member)
+            for (let i = 1; i <= funeralChildCount; i++) {
+                const childAgeEl = document.getElementById('funeral-child-age-' + i);
+                if (childAgeEl) {
+                    const childAge = parseInt(childAgeEl.value);
+                    if (isNaN(childAge) || childAge < 0 || childAge > 21) {
+                        showError('funeral-error', 'Child ' + i + ' age must be between 0 and 21.');
+                        return;
+                    }
+                    const childRate = funeralRates[childAge][term];
+                    const childPremium = (mainSA / 1000) * childRate;
+                    totalMonthly += childPremium;
+                    results.push({ member: 'Child ' + i, age: childAge, sa: mainSA, premium: childPremium });
+                }
+            }
+
+            // Calculate Parents
+            for (let i = 1; i <= funeralParentCount; i++) {
+                const parentAgeEl = document.getElementById('funeral-parent-age-' + i);
+                if (parentAgeEl) {
+                    const parentAge = parseInt(parentAgeEl.value);
+                    if (isNaN(parentAge) || parentAge < 0 || parentAge > 70) {
+                        showError('funeral-error', 'Parent ' + i + ' age must be between 0 and 70.');
+                        return;
+                    }
+                    const parentRate = funeralRates[parentAge][term];
+                    const parentPremium = (familySA / 1000) * parentRate;
+                    totalMonthly += parentPremium;
+                    results.push({ member: 'Parent ' + i, age: parentAge, sa: familySA, premium: parentPremium });
+                }
+            }
+
+            // Calculate Extended Family
+            for (let i = 1; i <= funeralExtendedCount; i++) {
+                const extAgeEl = document.getElementById('funeral-extended-age-' + i);
+                if (extAgeEl) {
+                    const extAge = parseInt(extAgeEl.value);
+                    if (isNaN(extAge) || extAge < 0 || extAge > 70) {
+                        showError('funeral-error', 'Extended family member ' + i + ' age must be between 0 and 70.');
+                        return;
+                    }
+                    const extRate = funeralRates[extAge][term];
+                    const extPremium = (familySA / 1000) * extRate;
+                    totalMonthly += extPremium;
+                    results.push({ member: 'Extended ' + i, age: extAge, sa: familySA, premium: extPremium });
+                }
+            }
+
+            // Add policy fee and levy to monthly total
+            const monthlyWithFee = totalMonthly + POLICY_FEE;
+            const monthlyLevy = monthlyWithFee * LEVY_RATE;
+            const grandMonthly = monthlyWithFee + monthlyLevy;
+
+            // Calculate other frequencies with discount multipliers
+            const quarterlyPremium = totalMonthly * QUARTERLY_MULTIPLIER;
+            const quarterlyWithFee = quarterlyPremium + POLICY_FEE_QUARTERLY;
+            const quarterlyLevy = quarterlyWithFee * LEVY_RATE;
+            const grandQuarterly = quarterlyWithFee + quarterlyLevy;
+
+            const semiAnnualPremium = totalMonthly * SEMIANNUAL_MULTIPLIER;
+            const semiAnnualWithFee = semiAnnualPremium + POLICY_FEE_SEMIANNUAL;
+            const semiAnnualLevy = semiAnnualWithFee * LEVY_RATE;
+            const grandSemiAnnual = semiAnnualWithFee + semiAnnualLevy;
+
+            const annualPremium = totalMonthly * ANNUAL_MULTIPLIER;
+            const annualWithFee = annualPremium + POLICY_FEE_ANNUAL;
+            const annualLevy = annualWithFee * LEVY_RATE;
+            const grandAnnual = annualWithFee + annualLevy;
+
+            // Display results table
+            let tableHTML = '';
+            results.forEach(r => {
+                tableHTML += `<tr><td>${r.member}</td><td>${r.age}</td><td>K ${r.sa.toLocaleString()}</td><td>K ${r.premium.toFixed(2)}</td></tr>`;
+            });
+            document.getElementById('funeral-results-body').innerHTML = tableHTML;
+
+            // Display totals
+            document.getElementById('funeral-total-monthly').textContent = 'K ' + grandMonthly.toFixed(2);
+            document.getElementById('funeral-total-quarterly').textContent = 'K ' + grandQuarterly.toFixed(2);
+            document.getElementById('funeral-total-semiannual').textContent = 'K ' + grandSemiAnnual.toFixed(2);
+            document.getElementById('funeral-total-annual').textContent = 'K ' + grandAnnual.toFixed(2);
+
+            document.getElementById('funeral-results').classList.add('show');
+        }
+        
         // GOOGLE SHEETS LOGGING
-        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyVQyxq1g3hyRHL6-Dq8uFoC4YwGYYN4egm-F3s1K1QoQAkd9QD37GlhGROLA2knNxzcw/exec';
+        const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbyUh33fO6W6DKm2yu2-W183qP8eTarv8t8vnByCEvUqKF_Zt-g-7FT0K0g6Wd5pLMsklw/exec';
         
         function logToGoogleSheet(quoteData) {
             fetch(GOOGLE_SHEET_URL, {
@@ -1608,12 +2796,15 @@
         function printQuote(product) {
             // Populate agent and client details for print
             document.getElementById('print-agent-name').textContent = document.getElementById('agent-name').value || '-';
+            document.getElementById('print-agent-code').textContent = document.getElementById('agent-code').value || '-';
             document.getElementById('print-agent-city').textContent = document.getElementById('agent-city').value || '-';
             document.getElementById('print-agent-phone').textContent = document.getElementById('agent-phone').value || '-';
             document.getElementById('print-agent-email').textContent = document.getElementById('agent-email').value || '-';
             document.getElementById('print-client-name').textContent = document.getElementById('client-name').value || '-';
+            document.getElementById('print-client-employer').textContent = document.getElementById('client-employer').value || '-';
             document.getElementById('print-client-phone').textContent = document.getElementById('client-phone').value || '-';
             document.getElementById('print-client-email').textContent = document.getElementById('client-email').value || '-';
+            document.getElementById('print-quotation-date').textContent = document.getElementById('quotation-date').value || '-';
             
             // Set print date and time
             const now = new Date();
@@ -1634,7 +2825,8 @@
                 'life': 'Life Protect',
                 'health': 'Health Protect',
                 'future': 'Future Protect',
-                'savings': 'Savings Calculator'
+                'savings': 'Savings Calculator',
+                'funeral': 'Funeral Product'
             };
             
             if (product === 'income') {
@@ -1709,6 +2901,35 @@
                     <p><strong>Interest Earned:</strong> ${interest}</p>
                     <p><strong>Expected Maturity Value:</strong> ${maturity}</p>
                 `;
+            } else if (product === 'funeral') {
+                const term = document.getElementById('funeral-term').value;
+                const mainSA = parseInt(document.getElementById('funeral-sa').value).toLocaleString();
+                const familySA = parseInt(document.getElementById('funeral-sa-family').value).toLocaleString();
+                const mainAge = document.getElementById('funeral-main-age').value;
+                const totalMonthly = document.getElementById('funeral-total-monthly').textContent;
+                const totalQuarterly = document.getElementById('funeral-total-quarterly').textContent;
+                const totalSemiAnnual = document.getElementById('funeral-total-semiannual').textContent;
+                const totalAnnual = document.getElementById('funeral-total-annual').textContent;
+                
+                let membersInfo = `<p><strong>Main Member Age:</strong> ${mainAge} years</p>`;
+                if (document.getElementById('funeral-spouse-toggle').checked) {
+                    const spouseAge = document.getElementById('funeral-spouse-age').value;
+                    membersInfo += `<p><strong>Spouse Age:</strong> ${spouseAge} years</p>`;
+                }
+                if (funeralChildCount > 0) membersInfo += `<p><strong>Children:</strong> ${funeralChildCount}</p>`;
+                if (funeralParentCount > 0) membersInfo += `<p><strong>Parents:</strong> ${funeralParentCount}</p>`;
+                if (funeralExtendedCount > 0) membersInfo += `<p><strong>Extended Family:</strong> ${funeralExtendedCount}</p>`;
+                
+                summaryHTML = `
+                    <p><strong>Product:</strong> Funeral Insurance</p>
+                    <p><strong>Policy Term:</strong> ${term} Years</p>
+                    <p><strong>Main SA:</strong> K ${mainSA} | <strong>Family SA:</strong> K ${familySA}</p>
+                    ${membersInfo}
+                    <p><strong>Monthly Premium:</strong> ${totalMonthly}</p>
+                    <p><strong>Quarterly Premium:</strong> ${totalQuarterly}</p>
+                    <p><strong>Semi-Annual Premium:</strong> ${totalSemiAnnual}</p>
+                    <p><strong>Annual Premium:</strong> ${totalAnnual}</p>
+                `;
             }
             
             document.getElementById(product + '-summary').innerHTML = summaryHTML;
@@ -1717,15 +2938,19 @@
             const quoteData = {
                 timestamp: new Date().toISOString(),
                 agentName: document.getElementById('agent-name').value || '',
+                agentCode: document.getElementById('agent-code').value || '',
                 agentCity: document.getElementById('agent-city').value || '',
                 agentPhone: document.getElementById('agent-phone').value || '',
                 agentEmail: document.getElementById('agent-email').value || '',
                 clientName: document.getElementById('client-name').value || '',
+                clientEmployer: document.getElementById('client-employer').value || '',
                 clientPhone: document.getElementById('client-phone').value || '',
                 clientEmail: document.getElementById('client-email').value || '',
+                quotationDate: document.getElementById('quotation-date').value || '',
                 product: productNames[product],
                 premium: document.getElementById(product + '-total')?.textContent || 
-                         document.getElementById('savings-maturity')?.textContent || ''
+                         document.getElementById('savings-maturity')?.textContent || 
+                         document.getElementById('funeral-total-monthly')?.textContent || ''
             };
             
             // Add product-specific details
@@ -1754,7 +2979,19 @@
                 quoteData.term = document.getElementById('savings-term').value;
                 quoteData.sumAssured = document.getElementById('savings-monthly').value;
                 quoteData.coverage = 'Savings @ ' + document.getElementById('savings-rate').value + '%';
-                quoteData.premium = document.getElementById('savings-maturity').textContent;
+                quoteData.premium = 'K ' + parseFloat(document.getElementById('savings-monthly').value).toLocaleString() + '/month';
+                quoteData.expectedSavings = document.getElementById('savings-maturity').textContent;
+            } else if (product === 'funeral') {
+                quoteData.age = document.getElementById('funeral-main-age').value;
+                quoteData.term = document.getElementById('funeral-term').value;
+                quoteData.sumAssured = document.getElementById('funeral-sa').value;
+                let members = ['Main'];
+                if (document.getElementById('funeral-spouse-toggle').checked) members.push('Spouse');
+                if (funeralChildCount > 0) members.push(funeralChildCount + ' Children');
+                if (funeralParentCount > 0) members.push(funeralParentCount + ' Parents');
+                if (funeralExtendedCount > 0) members.push(funeralExtendedCount + ' Extended');
+                quoteData.coverage = members.join(', ');
+                quoteData.premium = document.getElementById('funeral-total-monthly').textContent;
             }
             
             logToGoogleSheet(quoteData);
@@ -1762,6 +2999,12 @@
             // Trigger print
             window.print();
         }
+        
+        // Initialize quotation date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('quotation-date').value = today;
+        });
     </script>
 </body>
 </html>
