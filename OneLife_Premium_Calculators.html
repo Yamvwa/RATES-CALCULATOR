@@ -395,6 +395,58 @@
             box-shadow: 0 4px 12px rgba(255, 200, 41, 0.15);
         }
         
+        /* Savings Projections Styling */
+        .savings-projections {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .projection-box {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .projection-box.worst-case {
+            background: linear-gradient(145deg, #f8f9fa 0%, #e9ecef 100%);
+            border: 2px solid #dee2e6;
+        }
+        
+        .projection-box.best-case {
+            background: linear-gradient(145deg, #fff8e1 0%, #ffe082 100%);
+            border: 2px solid #FFC829;
+        }
+        
+        .projection-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        
+        .worst-case .projection-label {
+            color: #666;
+        }
+        
+        .best-case .projection-label {
+            color: #b38600;
+        }
+        
+        .projection-interest {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 10px;
+        }
+        
+        .projection-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+        
         .result-label {
             color: #555;
             font-weight: 500;
@@ -511,6 +563,14 @@
             .funeral-members-table, select, input, label, h3:not(.results h3),
             .funeral-members, .member-section, .member-header, .member-fields, .member-title,
             .toggle-switch, .add-member-btn, .note, .age-info {
+                display: none !important;
+            }
+            
+            /* Hide savings projection boxes and result rows - info is in Policy Details */
+            .savings-projections,
+            #savings-results .result-row,
+            #savings-results .breakdown-section,
+            #savings-results > h3 {
                 display: none !important;
             }
             
@@ -1839,13 +1899,13 @@
         <!-- SAVINGS CALCULATOR -->
         <div id="savings" class="calculator">
             <h2>Savings Calculator</h2>
-            <p class="subtitle">Calculate Expected Savings at Policy Maturity | 3% - 12% Annual Interest</p>
+            <p class="subtitle">Calculate Expected Savings at Policy Maturity | Worst & Best Case Projections</p>
             
             <div class="info-box">
-                <strong>Interest Rate:</strong> Select rate from 3% to 12% per annum compounded monthly on your savings contributions
+                <strong>Interest Rate Projections:</strong> Shows 3% (guaranteed) and 12% (best case) annual returns compounded monthly
             </div>
             
-            <div class="form-row three-col">
+            <div class="form-row">
                 <div class="form-group">
                     <label for="savings-monthly">Monthly Savings Amount (K)</label>
                     <input type="number" id="savings-monthly" min="1" placeholder="Enter monthly savings">
@@ -1857,21 +1917,6 @@
                         <option value="5">5 Years</option>
                         <option value="7">7 Years</option>
                         <option value="10">10 Years</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="savings-rate">Interest Rate (p.a.)</label>
-                    <select id="savings-rate">
-                        <option value="3">3%</option>
-                        <option value="4">4%</option>
-                        <option value="5">5%</option>
-                        <option value="6">6%</option>
-                        <option value="7">7%</option>
-                        <option value="8">8%</option>
-                        <option value="9">9%</option>
-                        <option value="10">10%</option>
-                        <option value="11">11%</option>
-                        <option value="12">12%</option>
                     </select>
                 </div>
             </div>
@@ -1903,14 +1948,18 @@
                         <span class="result-label">Net Contributions</span>
                         <span class="result-value" id="savings-net-contrib"></span>
                     </div>
-                    <div class="result-row">
-                        <span class="result-label">Interest Earned (<span id="savings-rate-display">3</span>% p.a.)</span>
-                        <span class="result-value" id="savings-interest"></span>
-                    </div>
                 </div>
-                <div class="result-row total">
-                    <span class="result-label">EXPECTED MATURITY VALUE</span>
-                    <span class="result-value" id="savings-maturity"></span>
+                <div class="savings-projections">
+                    <div class="projection-box worst-case">
+                        <div class="projection-label">GUARANTEED INTEREST (3% p.a.)</div>
+                        <div class="projection-interest">Interest: <span id="savings-interest-worst"></span></div>
+                        <div class="projection-value" id="savings-maturity-worst"></div>
+                    </div>
+                    <div class="projection-box best-case">
+                        <div class="projection-label">BEST CASE (12% p.a.)</div>
+                        <div class="projection-interest">Interest: <span id="savings-interest-best"></span></div>
+                        <div class="projection-value" id="savings-maturity-best"></div>
+                    </div>
                 </div>
                 <button class="print-btn" onclick="printQuote('savings')">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -2456,32 +2505,36 @@
                 return;
             }
             
-            // Selected annual interest rate, compounded monthly
-            // 1% savings charge deducted from each monthly contribution
-            const annualRatePercent = parseInt(document.getElementById('savings-rate').value);
-            const annualRate = annualRatePercent / 100;
-            const monthlyRate = annualRate / 12;
             const investChargeRate = 0.01;
             const totalMonths = term * 12;
             
             // Net contribution after 1% savings charge
             const netMonthly = monthly * (1 - investChargeRate);
-            
-            // Future Value of ordinary annuity: FV = P * [((1 + r)^n - 1) / r]
-            const maturityValue = netMonthly * ((Math.pow(1 + monthlyRate, totalMonths) - 1) / monthlyRate);
             const totalContributions = monthly * totalMonths;
             const totalInvestCharge = monthly * investChargeRate * totalMonths;
             const netContributions = netMonthly * totalMonths;
-            const interestEarned = maturityValue - netContributions;
+            
+            // Calculate guaranteed interest (3% p.a.)
+            const worstRate = 0.03 / 12;
+            const worstMaturity = netMonthly * ((Math.pow(1 + worstRate, totalMonths) - 1) / worstRate);
+            const worstInterest = worstMaturity - netContributions;
+            
+            // Calculate best case (12% p.a.)
+            const bestRate = 0.12 / 12;
+            const bestMaturity = netMonthly * ((Math.pow(1 + bestRate, totalMonths) - 1) / bestRate);
+            const bestInterest = bestMaturity - netContributions;
             
             document.getElementById('savings-contribution').textContent = formatCurrency(monthly);
             document.getElementById('savings-term-display').textContent = term + ' Years (' + totalMonths + ' months)';
-            document.getElementById('savings-rate-display').textContent = annualRatePercent;
             document.getElementById('savings-total-contrib').textContent = formatCurrency(totalContributions);
             document.getElementById('savings-charge').textContent = '- ' + formatCurrency(totalInvestCharge);
             document.getElementById('savings-net-contrib').textContent = formatCurrency(netContributions);
-            document.getElementById('savings-interest').textContent = formatCurrency(interestEarned);
-            document.getElementById('savings-maturity').textContent = formatCurrency(maturityValue);
+            
+            // Display both projections
+            document.getElementById('savings-interest-worst').textContent = formatCurrency(worstInterest);
+            document.getElementById('savings-maturity-worst').textContent = formatCurrency(worstMaturity);
+            document.getElementById('savings-interest-best').textContent = formatCurrency(bestInterest);
+            document.getElementById('savings-maturity-best').textContent = formatCurrency(bestMaturity);
             
             document.getElementById('savings-results').classList.add('show');
         }
@@ -2884,22 +2937,26 @@
             } else if (product === 'savings') {
                 const monthly = parseFloat(document.getElementById('savings-monthly').value).toLocaleString();
                 const term = document.getElementById('savings-term').value;
-                const rate = document.getElementById('savings-rate').value;
                 const totalContrib = document.getElementById('savings-total-contrib').textContent;
                 const investCharge = document.getElementById('savings-charge').textContent;
                 const netContrib = document.getElementById('savings-net-contrib').textContent;
-                const interest = document.getElementById('savings-interest').textContent;
-                const maturity = document.getElementById('savings-maturity').textContent;
+                const worstInterest = document.getElementById('savings-interest-worst').textContent;
+                const worstMaturity = document.getElementById('savings-maturity-worst').textContent;
+                const bestInterest = document.getElementById('savings-interest-best').textContent;
+                const bestMaturity = document.getElementById('savings-maturity-best').textContent;
                 summaryHTML = `
                     <p><strong>Product:</strong> Savings Projection</p>
                     <p><strong>Monthly Contribution:</strong> K ${monthly}</p>
                     <p><strong>Policy Term:</strong> ${term} Years</p>
-                    <p><strong>Interest Rate:</strong> ${rate}% p.a. | <strong>Savings Charge:</strong> 1% of savings</p>
+                    <p><strong>Savings Charge:</strong> 1% of contributions</p>
                     <p><strong>Total Contributions:</strong> ${totalContrib}</p>
-                    <p><strong>Savings Charge:</strong> ${investCharge}</p>
+                    <p><strong>Less Savings Charge:</strong> ${investCharge}</p>
                     <p><strong>Net Contributions:</strong> ${netContrib}</p>
-                    <p><strong>Interest Earned:</strong> ${interest}</p>
-                    <p><strong>Expected Maturity Value:</strong> ${maturity}</p>
+                    <hr style="border: none; border-top: 1px solid #ddd; margin: 10px 0;">
+                    <p><strong>GUARANTEED INTEREST (3% p.a.):</strong></p>
+                    <p>Interest Earned: ${worstInterest} | <strong>Maturity Value: ${worstMaturity}</strong></p>
+                    <p><strong>BEST CASE (12% p.a.):</strong></p>
+                    <p>Interest Earned: ${bestInterest} | <strong>Maturity Value: ${bestMaturity}</strong></p>
                 `;
             } else if (product === 'funeral') {
                 const term = document.getElementById('funeral-term').value;
@@ -2949,7 +3006,7 @@
                 quotationDate: document.getElementById('quotation-date').value || '',
                 product: productNames[product],
                 premium: document.getElementById(product + '-total')?.textContent || 
-                         document.getElementById('savings-maturity')?.textContent || 
+                         document.getElementById('savings-maturity-best')?.textContent || 
                          document.getElementById('funeral-total-monthly')?.textContent || ''
             };
             
@@ -2978,9 +3035,9 @@
             } else if (product === 'savings') {
                 quoteData.term = document.getElementById('savings-term').value;
                 quoteData.sumAssured = document.getElementById('savings-monthly').value;
-                quoteData.coverage = 'Savings @ ' + document.getElementById('savings-rate').value + '%';
+                quoteData.coverage = 'Savings @ 3% - 12%';
                 quoteData.premium = 'K ' + parseFloat(document.getElementById('savings-monthly').value).toLocaleString() + '/month';
-                quoteData.expectedSavings = document.getElementById('savings-maturity').textContent;
+                quoteData.expectedSavings = 'Guaranteed: ' + document.getElementById('savings-maturity-worst').textContent + ' | Best: ' + document.getElementById('savings-maturity-best').textContent;
             } else if (product === 'funeral') {
                 quoteData.age = document.getElementById('funeral-main-age').value;
                 quoteData.term = document.getElementById('funeral-term').value;
