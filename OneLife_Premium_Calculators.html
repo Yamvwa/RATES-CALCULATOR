@@ -2323,7 +2323,8 @@
             let ptdPremium = 0;
             if (includePTD) {
                 const ptdRate = incomePTDRates[age][term];
-                ptdPremium = (ptdRate / 1000) * sa;
+                // PTD premium is based on half of sum assured
+                ptdPremium = (ptdRate / 1000) * (sa / 2);
             }
             const insuranceLevy = LEVY_RATE * (deathPremium + ptdPremium);
             const investCharge = INVEST_CHARGE_RATE * savings;
@@ -2460,11 +2461,11 @@
                 return;
             }
             
-            let deathPremium2 = 0;
+            let age2 = null;
+            let sa2 = 0;
             if (include2nd) {
-                const age2 = parseInt(document.getElementById('future-age2').value);
-                const sa2 = parseFloat(document.getElementById('future-sa2').value) || 0;
-                
+                age2 = parseInt(document.getElementById('future-age2').value);
+                sa2 = parseFloat(document.getElementById('future-sa2').value) || 0;
                 if (isNaN(age2) || age2 < 18 || age2 > 55) {
                     showError('future-error', 'Please enter a valid age for 2nd Life (18-55).');
                     return;
@@ -2473,26 +2474,28 @@
                     showError('future-error', '2nd Life Sum Assured must be between K10,000 and K2,000,000.');
                     return;
                 }
-                
-                const rate2 = futureDeathRates[age2][term];
-                deathPremium2 = (rate2 / 1000) * sa2;
             }
-            
-            const rate1 = futureDeathRates[age1][term];
-            const deathPremium1 = (rate1 / 1000) * sa1;
-            const combinedPremium = deathPremium1 + deathPremium2;
-            const insuranceLevy = LEVY_RATE * combinedPremium;
+
+            // Record both ages, but use the oldest for premium calculation
+            let oldestAge = age1;
+            if (include2nd && age2 > age1) {
+                oldestAge = age2;
+            }
+            const saForPremium = sa1; // Premium is always based on 1st Life's sum assured
+            const rate = futureDeathRates[oldestAge][term];
+            const deathPremium = (rate / 1000) * saForPremium;
+            const insuranceLevy = LEVY_RATE * deathPremium;
             const investCharge = INVEST_CHARGE_RATE * savings;
-            const total = combinedPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
-            
-            document.getElementById('future-death1').textContent = formatCurrency(deathPremium1);
-            document.getElementById('future-death2').textContent = formatCurrency(deathPremium2);
+            const total = deathPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
+
+            document.getElementById('future-death1').textContent = formatCurrency(deathPremium);
+            document.getElementById('future-death2').textContent = include2nd ? `Ages: ${age1} & ${age2}` : '';
             document.getElementById('future-death2-row').style.display = include2nd ? '' : 'none';
             document.getElementById('future-levy').textContent = formatCurrency(insuranceLevy);
             document.getElementById('future-savings-display').textContent = formatCurrency(savings);
             document.getElementById('future-savings-charge').textContent = formatCurrency(investCharge);
             document.getElementById('future-total').textContent = formatCurrency(total);
-            
+
             document.getElementById('future-results').classList.add('show');
         }
         
