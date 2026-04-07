@@ -2326,7 +2326,7 @@
                 // PTD premium is based on half of sum assured
                 ptdPremium = (ptdRate / 1000) * (sa / 2);
             }
-            const insuranceLevy = LEVY_RATE * (deathPremium + ptdPremium);
+            const insuranceLevy = LEVY_RATE * (deathPremium + ptdPremium + POLICY_FEE);
             const investCharge = INVEST_CHARGE_RATE * savings;
             const total = deathPremium + ptdPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
             
@@ -2362,7 +2362,7 @@
             
             const deathRate = lifeDeathRates[age][term];
             const deathPremium = (deathRate / 1000) * sa;
-            const insuranceLevy = LEVY_RATE * deathPremium;
+            const insuranceLevy = LEVY_RATE * (deathPremium + POLICY_FEE);
             const investCharge = INVEST_CHARGE_RATE * savings;
             const total = deathPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
             
@@ -2425,7 +2425,7 @@
             
             const deathRate = healthDeathRates[age][term];
             const deathPremium = (deathRate / 1000) * sa;
-            const insuranceLevy = LEVY_RATE * (deathPremium + hcb);
+            const insuranceLevy = LEVY_RATE * (deathPremium + hcb + POLICY_FEE);
             const total = deathPremium + hcb + POLICY_FEE + insuranceLevy;
             
             // Update tier display label
@@ -2484,7 +2484,7 @@
             const saForPremium = sa1; // Premium is always based on 1st Life's sum assured
             const rate = futureDeathRates[oldestAge][term];
             const deathPremium = (rate / 1000) * saForPremium;
-            const insuranceLevy = LEVY_RATE * deathPremium;
+            const insuranceLevy = LEVY_RATE * (deathPremium + POLICY_FEE);
             const investCharge = INVEST_CHARGE_RATE * savings;
             const total = deathPremium + POLICY_FEE + insuranceLevy + savings + investCharge;
 
